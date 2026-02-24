@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PlantãoTXT</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>PlantãoTXT</h1>
+
+    <div class="section">
+      <h2>🏥 Clínica</h2>
+      <button onclick="copiar('admissaoClinica')">Admissão – Sala de Emergência</button>
+      <button onclick="copiar('evolucao')">Evolução – Sala de Emergência</button>
+    </div>
+
+    <div class="section">
+      <h2>🚑 Trauma</h2>
+      <button onclick="copiar('admissaoTraumaFem')">Admissão Trauma – Feminino</button>
+      <button onclick="copiar('admissaoTraumaMasc')">Admissão Trauma – Masculino</button>
+    </div>
+
+    <div class="section">
+      <h2>🧾 Orientações / Prescrições (Alta)</h2>
+      <button onclick="copiar('altaDengue')">Dengue A ou B</button>
+      <button onclick="copiar('altaDorTraumatica')">Dor Traumática</button>
+      <button onclick="copiar('altaHerpesZoster')">Herpes Zóster</button>
+      <button onclick="copiar('altaIVAS')">IVAS</button>
+      <button onclick="copiar('altaNefrolitiase')">Nefrolitíase</button>
+      <button onclick="copiar('altaPNMSemComorb')">PNM Comunidade – leve (sem comorbidade)</button>
+      <button onclick="copiar('altaPNMComorb')">PNM Comunidade – leve (com comorbidades)</button>
+      <button onclick="copiar('altaPNMAlergia')">PNM – se alergia a β-lactâmicos / macrolídeos</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
