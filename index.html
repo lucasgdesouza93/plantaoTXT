@@ -7,34 +7,47 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>PlantãoTXT</h1>
+  <div class="layout">
+    <aside class="sidebar">
+      <h1>PlantãoTXT</h1>
 
-    <div class="section">
-      <h2>🏥 Clínica</h2>
-      <button onclick="copiar('admissaoClinica')">Admissão – Sala de Emergência</button>
-      <button onclick="copiar('evolucao')">Evolução – Sala de Emergência</button>
-    </div>
+      <div class="section">
+        <h2>🏥 Clínica</h2>
+        <button type="button" onclick="copiar('admissaoClinica')">Admissão – Sala de Emergência</button>
+        <button type="button" onclick="copiar('evolucao')">Evolução – Sala de Emergência</button>
+      </div>
 
-    <div class="section">
-      <h2>🚑 Trauma</h2>
-      <button onclick="copiar('admissaoTraumaFem')">Admissão Trauma – Feminino</button>
-      <button onclick="copiar('admissaoTraumaMasc')">Admissão Trauma – Masculino</button>
-    </div>
+      <div class="section">
+        <h2>🚑 Trauma</h2>
+        <button type="button" onclick="copiar('admissaoTraumaFem')">Admissão Trauma – Feminino</button>
+        <button type="button" onclick="copiar('admissaoTraumaMasc')">Admissão Trauma – Masculino</button>
+      </div>
 
-    <div class="section">
-      <h2>🧾 Orientações / Prescrições (Alta)</h2>
-      <button onclick="copiar('altaDengue')">Dengue A ou B</button>
-      <button onclick="copiar('altaDorTraumatica')">Dor Traumática</button>
-      <button onclick="copiar('altaHerpesZoster')">Herpes Zóster</button>
-      <button onclick="copiar('altaIVAS')">IVAS</button>
-      <button onclick="copiar('altaNefrolitiase')">Nefrolitíase</button>
-      <button onclick="copiar('altaPNMSemComorb')">PNM Comunidade – leve (sem comorbidade)</button>
-      <button onclick="copiar('altaPNMComorb')">PNM Comunidade – leve (com comorbidades)</button>
-      <button onclick="copiar('altaPNMAlergia')">PNM – se alergia a β-lactâmicos / macrolídeos</button>
-    </div>
+      <div class="section">
+        <h2>🧾 Orientações / Prescrições (Alta)</h2>
+        <button type="button" onclick="copiar('altaDengue')">Dengue A ou B</button>
+        <button type="button" onclick="copiar('altaDorTraumatica')">Dor Traumática</button>
+        <button type="button" onclick="copiar('altaHerpesZoster')">Herpes Zóster</button>
+        <button type="button" onclick="copiar('altaIVAS')">IVAS</button>
+        <button type="button" onclick="copiar('altaNefrolitiase')">Nefrolitíase</button>
+        <button type="button" onclick="copiar('altaPNMSemComorb')">PNM Comunidade – leve (sem comorbidade)</button>
+        <button type="button" onclick="copiar('altaPNMComorb')">PNM Comunidade – leve (com comorbidades)</button>
+        <button type="button" onclick="copiar('altaPNMAlergia')">PNM – se alergia a β-lactâmicos / macrolídeos</button>
+      </div>
+    </aside>
+
+    <main class="preview">
+      <div id="preview-empty">Selecione um modelo para visualizar.</div>
+      <div id="preview-content" hidden>
+        <div id="preview-header">
+          <div id="preview-title"></div>
+          <button type="button" id="btn-copy" onclick="copiarPreview()">Copiar</button>
+        </div>
+        <pre id="preview-body" contenteditable="true" spellcheck="false"></pre>
+      </div>
+    </main>
   </div>
 
-  <script src="app.js"></script>
+  <script type="module" src="app.js"></script>
 </body>
 </html>
