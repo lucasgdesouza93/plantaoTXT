@@ -12,9 +12,10 @@
 [Browser]
     └── index.html               (single page — no router)
          ├── style.css           (visual styling)
-         └── app.js              (entry point: imports data, exposes copiar/copy handlers)
+         └── app.js              (entry point: imports data, exposes copy handlers, initializes category toggles)
               ├── data/clinica.js (clinical templates)
               ├── data/trauma.js  (trauma templates)
+              ├── data/procedimentos.js (procedure descriptions)
               ├── data/alta.js    (discharge prescription templates)
               └── data/ia.js      (frequently used AI prompts)
 ```
@@ -44,10 +45,12 @@
 ## Main System Flow
 
 ```
+User optionally collapses or expands a sidebar category
+    → checkbox in .category-header toggles .collapsed on .sidebar-category
+    → .category-content is shown or hidden
 User selects a template or prompt
     → onclick calls window.copiar('templateKey')
     → copiar() looks up key in textos
-    → textos is assembled from data/ modules
     → selected button receives .active class
     → preview panel shows the selected text
 User clicks "Copiar"
@@ -62,12 +65,13 @@ User clicks "Copiar"
 
 ## Template Categories
 
-The application contains **13 items** grouped into 4 sections:
+The application contains **33 items** grouped into 5 sections:
 
 | Section | Items |
 |---------|-------|
 | Clínica | Admissão – Sala de Emergência, Evolução – Sala de Emergência |
 | Trauma | Admissão Trauma – Feminino, Admissão Trauma – Masculino |
+| Procedimentos | 20 descrições de procedimentos clínicos e de emergência |
 | Orientações / Prescrições (Alta) | Dengue, Dor Traumática, Herpes Zóster, IVAS, Nefrolitíase, PNM sem comorbidade, PNM com comorbidade, PNM – alergia a β-lactâmicos/macrolídeos |
 | Prompts de IA | Resultados laboratoriais em linha |
 
@@ -77,10 +81,11 @@ The application contains **13 items** grouped into 4 sections:
 
 | File | Path | Role |
 |------|------|------|
-| HTML shell | [index.html](../index.html) | DOM structure, sidebar sections, preview panel |
-| Entry point | [app.js](../app.js) | Imports data modules, merges `textos`, defines `copiar()`, `copiarPreview()`, and `toast()` |
+| HTML shell | [index.html](../index.html) | DOM structure, checkbox-controlled sidebar groups, preview panel |
+| Entry point | [app.js](../app.js) | Imports data modules, merges `textos`, defines `copiar()`, `copiarPreview()`, `toast()`, and initializes category toggles |
 | Clinical templates | [data/clinica.js](../data/clinica.js) | `admissaoClinica`, `evolucao` |
 | Trauma templates | [data/trauma.js](../data/trauma.js) | `admissaoTraumaFem`, `admissaoTraumaMasc` |
+| Procedure templates | [data/procedimentos.js](../data/procedimentos.js) | 20 procedure description templates |
 | Discharge templates | [data/alta.js](../data/alta.js) | 8 discharge prescription templates |
 | AI prompt templates | [data/ia.js](../data/ia.js) | `promptResultadosLaboratoriaisLinha` |
-| Styling | [style.css](../style.css) | Dark responsive theme, layout, cards, buttons, and preview panel |
+| Styling | [style.css](../style.css) | Dark responsive theme, category toggles, cards, buttons, and preview panel |

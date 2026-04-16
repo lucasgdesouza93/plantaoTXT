@@ -22,10 +22,11 @@ Clipboard access uses `navigator.clipboard.writeText()` first, with `document.ex
 
 ## AD-05: Data Hardcoded as JavaScript Strings, Split by Category
 
-All templates and reusable prompts are stored as string literals in ES module files under [data/](../data/). Content is grouped by category:
+All templates, procedure descriptions, and reusable prompts are stored as string literals in ES module files under [data/](../data/). Content is grouped by category:
 
 - [data/clinica.js](../data/clinica.js)
 - [data/trauma.js](../data/trauma.js)
+- [data/procedimentos.js](../data/procedimentos.js)
 - [data/alta.js](../data/alta.js)
 - [data/ia.js](../data/ia.js)
 
@@ -49,7 +50,7 @@ There is no authentication, authorization, or application-level persistence beca
 
 ## AD-10: Portuguese as the Only Language
 
-All UI text and template/prompt content are written in Brazilian Portuguese.
+All UI text and template, procedure, and prompt content are written in Brazilian Portuguese.
 
 ## AD-11: ES Modules for Data Files, Window Handlers for HTML Compatibility
 

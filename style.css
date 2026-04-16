@@ -76,8 +76,16 @@ h1 {
   box-shadow: 0 12px 28px rgba(2, 6, 23, 0.16);
 }
 
-.section h2 {
-  margin: 0 0 12px;
+.category-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.category-title {
   color: var(--color-text-soft);
   font-size: 0.82rem;
   font-weight: 700;
@@ -85,10 +93,32 @@ h1 {
   line-height: 1.35;
 }
 
+.category-toggle {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--color-accent);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.category-content {
+  display: grid;
+  gap: 8px;
+}
+
+.sidebar-category.collapsed .category-header {
+  margin-bottom: 0;
+}
+
+.sidebar-category.collapsed .category-content {
+  display: none;
+}
+
 button {
   display: block;
   width: 100%;
-  margin-bottom: 8px;
+  margin-bottom: 0;
   padding: 11px 12px;
   border: 1px solid transparent;
   border-radius: var(--radius-sm);
@@ -104,10 +134,6 @@ button {
     border-color 140ms ease,
     box-shadow 140ms ease,
     transform 140ms ease;
-}
-
-button:last-child {
-  margin-bottom: 0;
 }
 
 button:hover {

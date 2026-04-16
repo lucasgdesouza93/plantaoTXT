@@ -10,7 +10,7 @@ PlantãoTXT is a fully client-side static web application. There is no server, n
 
 ## Data Persistence
 
-There is no persistence layer. All template and prompt content is defined in ES module files under [data/](../data/) and merged into an in-memory `textos` object by [app.js](../app.js).
+There is no persistence layer. All template, procedure, and prompt content is defined in ES module files under [data/](../data/) and merged into an in-memory `textos` object by [app.js](../app.js).
 
 ---
 
@@ -23,5 +23,6 @@ The application can be deployed to any static file host. The following files mus
 - [style.css](../style.css)
 - [data/clinica.js](../data/clinica.js)
 - [data/trauma.js](../data/trauma.js)
+- [data/procedimentos.js](../data/procedimentos.js)
 - [data/alta.js](../data/alta.js)
 - [data/ia.js](../data/ia.js)

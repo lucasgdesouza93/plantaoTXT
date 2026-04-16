@@ -5,11 +5,12 @@
 ```
 d:/Apps/PlantaoTXT/
 ├── index.html          Single-page HTML shell
-├── app.js              Entry point: imports data modules and exposes copy handlers globally
+├── app.js              Entry point: imports data modules, initializes sidebar toggles, and exposes copy handlers globally
 ├── style.css           All visual styling
 ├── data/
 │   ├── clinica.js      Clinical admission and progression templates
 │   ├── trauma.js       Trauma admission templates
+│   ├── procedimentos.js Procedure description templates
 │   ├── alta.js         Discharge prescription templates
 │   └── ia.js           Frequently used AI prompts
 ├── tasks/
@@ -35,7 +36,7 @@ d:/Apps/PlantaoTXT/
 
 | File | Description |
 |------|-------------|
-| [index.html](../index.html) | Page shell with sidebar sections for Clínica, Trauma, Alta, and Prompts de IA plus the preview panel |
+| [index.html](../index.html) | Page shell with five `.sidebar-category` groups, checkbox-based category headers, `.model-button` entries, and the preview panel |
 
 ### JavaScript — Data Layer
 
@@ -45,6 +46,7 @@ Each file in [data/](../data/) exports a named object that `app.js` merges into 
 |------|--------|------|
 | [data/clinica.js](../data/clinica.js) | `clinicaTemplates` | `admissaoClinica`, `evolucao` |
 | [data/trauma.js](../data/trauma.js) | `traumaTemplates` | `admissaoTraumaFem`, `admissaoTraumaMasc` |
+| [data/procedimentos.js](../data/procedimentos.js) | `procedureTemplates` | 20 procedure description keys |
 | [data/alta.js](../data/alta.js) | `altaTemplates` | `altaDengue`, `altaDorTraumatica`, `altaHerpesZoster`, `altaIVAS`, `altaNefrolitiase`, `altaPNMComorb`, `altaPNMSemComorb`, `altaPNMAlergia` |
 | [data/ia.js](../data/ia.js) | `aiPromptTemplates` | `promptResultadosLaboratoriaisLinha` |
 
@@ -52,9 +54,10 @@ Each file in [data/](../data/) exports a named object that `app.js` merges into 
 
 | Function | Description |
 |----------|-------------|
-| `copiar(tipo)` | Looks up the selected key, updates active button state, and shows the text in the preview panel |
+| `copiar(tipo)` | Looks up the selected key, updates active model button state, and shows the text in the preview panel |
 | `copiarPreview()` | Copies the current editable preview content to clipboard |
 | `toast(msg)` | Creates or reuses the toast notification element |
+| `initCategoryToggles()` | Binds `.category-toggle` checkboxes and toggles `.collapsed` on each `.sidebar-category` |
 
 `app.js` imports all data modules and exposes `window.copiar` and `window.copiarPreview` for inline HTML handlers.
 
@@ -62,7 +65,7 @@ Each file in [data/](../data/) exports a named object that `app.js` merges into 
 
 | File | Description |
 |------|-------------|
-| [style.css](../style.css) | Dark responsive theme, layout, cards, buttons, and preview panel styles |
+| [style.css](../style.css) | Dark responsive theme, category headers, collapsible sidebar groups, buttons, and preview panel styles |
 
 ---
 

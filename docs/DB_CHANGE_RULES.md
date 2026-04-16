@@ -2,7 +2,7 @@
 
 ## Scope
 
-This project has no database. The equivalent persistence layer is the set of files under [data/](../data/), which hold all template and prompt strings split by category. The `textos` object in [app.js](../app.js) is assembled by merging these modules at startup.
+This project has no database. The equivalent persistence layer is the set of files under [data/](../data/), which hold all template, procedure, and prompt strings split by category. The `textos` object in [app.js](../app.js) is assembled by merging these modules at startup.
 
 ---
 
@@ -16,9 +16,9 @@ Each key in the data files is referenced by name in an `onclick` attribute in [i
 
 The lookup `textos[tipo]` is an exact string match. If a key is renamed, update both the data file and the matching `onclick="copiar('...')"` call in [index.html](../index.html).
 
-### Rule 3: Preserve Template Text Structure
+### Rule 3: Preserve Content Structure
 
-Medical templates follow an established format with uppercase section labels, spacing, and fill-in placeholders. Prompt text should remain directly reusable for clipboard workflows.
+Medical templates follow an established format with section labels, spacing, and placeholders. Procedure descriptions and prompt text should remain directly reusable for clipboard workflows.
 
 ### Rule 4: Add New Content in the Appropriate Data File
 
@@ -35,6 +35,7 @@ import { newCategoryTemplates } from './data/newcategory.js';
 const textos = {
   ...clinicaTemplates,
   ...traumaTemplates,
+  ...procedureTemplates,
   ...altaTemplates,
   ...aiPromptTemplates,
   ...newCategoryTemplates,
@@ -46,9 +47,10 @@ const textos = {
 There is no automated test suite. After changes to [app.js](../app.js), [index.html](../index.html), or files in [data/](../data/):
 
 1. Open the page in a browser.
-2. Click each modified or new button.
-3. Copy the preview content.
-4. Verify the pasted text matches the intended content.
+2. Expand any affected category.
+3. Click each modified or new button.
+4. Copy the preview content.
+5. Verify the pasted text matches the intended content.
 
 ### Rule 6: Preserve UTF-8 Encoding
 

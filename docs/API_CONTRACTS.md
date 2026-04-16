@@ -10,19 +10,20 @@ There are no REST endpoints, GraphQL endpoints, WebSocket connections, or runtim
 
 ## Internal JavaScript API
 
-The application exposes three functions defined in [app.js](../app.js). Two are assigned to `window` for inline `onclick` handlers.
+The application defines four main functions in [app.js](../app.js). Two are exposed on `window` for inline `onclick` handlers.
 
 | Function | Exposed as | Purpose |
 |----------|-----------|---------|
-| `copiar(tipo)` | `window.copiar` | Shows the selected template/prompt in the preview panel |
-| `copiarPreview()` | `window.copiarPreview` | Copies current preview text to clipboard |
-| `toast(msg)` | internal only | Shows the "Copiado ✓" notification |
+| `copiar(tipo)` | `window.copiar` | Shows the selected template, procedure description, or prompt in the preview panel |
+| `copiarPreview()` | `window.copiarPreview` | Copies the current preview text to clipboard |
+| `toast(msg)` | internal only | Shows the temporary "Copiado ✓" notification |
+| `initCategoryToggles()` | internal only | Initializes checkbox-controlled collapse/expand behavior for sidebar categories |
 
 ---
 
 ### `copiar(tipo)`
 
-Displays a template or prompt in the preview panel. It does **not** copy automatically.
+Displays a template, procedure description, or prompt in the preview panel. It does **not** copy automatically.
 
 **Signature:**
 ```js
@@ -31,26 +32,18 @@ function copiar(tipo: string): void
 
 **Valid values for `tipo`:**
 
-| Value | Meaning |
-|-------|---------|
-| `'admissaoClinica'` | ER clinical admission |
-| `'evolucao'` | ER progression note |
-| `'admissaoTraumaFem'` | Trauma admission – female |
-| `'admissaoTraumaMasc'` | Trauma admission – male |
-| `'altaDengue'` | Dengue discharge prescription |
-| `'altaDorTraumatica'` | Traumatic pain discharge prescription |
-| `'altaHerpesZoster'` | Herpes zoster discharge prescription |
-| `'altaIVAS'` | IVAS discharge prescription |
-| `'altaNefrolitiase'` | Nephrolithiasis discharge prescription |
-| `'altaPNMComorb'` | Community pneumonia with comorbidities |
-| `'altaPNMSemComorb'` | Community pneumonia without comorbidities |
-| `'altaPNMAlergia'` | Community pneumonia for β-lactam/macrolide allergy |
-| `'promptResultadosLaboratoriaisLinha'` | AI prompt for inline lab result formatting |
+| Group | Values |
+|-------|--------|
+| Clínica | `admissaoClinica`, `evolucao` |
+| Trauma | `admissaoTraumaFem`, `admissaoTraumaMasc` |
+| Procedimentos | `orotrachealIntubation`, `cricothyroidotomy`, `chestTubeDrainage`, `thoracentesis`, `resuscitativeThoracotomy`, `synchronizedCardioversion`, `transvenousPacemaker`, `pericardiocentesis`, `centralVenousAccess`, `arterialPuncture`, `intraosseousAccess`, `lumbarPuncture`, `paracentesis`, `urinaryCatheterization`, `enteralTubeInsertion`, `immobilization`, `jointReduction`, `woundSuture`, `abscessDrainage`, `proceduralSedation` |
+| Alta | `altaDengue`, `altaDorTraumatica`, `altaHerpesZoster`, `altaIVAS`, `altaNefrolitiase`, `altaPNMComorb`, `altaPNMSemComorb`, `altaPNMAlergia` |
+| Prompts de IA | `promptResultadosLaboratoriaisLinha` |
 
 **Behavior:**
 1. Looks up `textos[tipo]`.
 2. If the key does not exist, shows `alert("Modelo não encontrado.")`.
-3. Clears `.active` from buttons and marks the selected button.
+3. Clears `.active` from `.model-button` elements and marks the selected one.
 4. Shows `#preview-content`.
 5. Updates `#preview-title` and `#preview-body`.
 
@@ -77,6 +70,12 @@ async function copiarPreview(): Promise<void>
 ### `toast(msg)`
 
 Shows a temporary bottom-centered notification and reuses the same DOM node across calls.
+
+---
+
+### `initCategoryToggles()`
+
+Binds all `.category-toggle` checkboxes, applies the initial collapsed state for unchecked categories, and updates `.collapsed` on change.
 
 ---
 

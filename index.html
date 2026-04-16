@@ -11,33 +11,82 @@
     <aside class="sidebar">
       <h1>PlantãoTXT</h1>
 
-      <div class="section">
-        <h2>🏥 Clínica</h2>
-        <button type="button" onclick="copiar('admissaoClinica')">Admissão – Sala de Emergência</button>
-        <button type="button" onclick="copiar('evolucao')">Evolução – Sala de Emergência</button>
+      <div class="section sidebar-category">
+        <label class="category-header">
+          <input type="checkbox" class="category-toggle" />
+          <span class="category-title">🏥 Clínica</span>
+        </label>
+        <div class="category-content">
+          <button type="button" class="model-button" onclick="copiar('admissaoClinica')">Admissão – Sala de Emergência</button>
+          <button type="button" class="model-button" onclick="copiar('evolucao')">Evolução – Sala de Emergência</button>
+        </div>
       </div>
 
-      <div class="section">
-        <h2>🚑 Trauma</h2>
-        <button type="button" onclick="copiar('admissaoTraumaFem')">Admissão Trauma – Feminino</button>
-        <button type="button" onclick="copiar('admissaoTraumaMasc')">Admissão Trauma – Masculino</button>
+      <div class="section sidebar-category">
+        <label class="category-header">
+          <input type="checkbox" class="category-toggle" />
+          <span class="category-title">🚑 Trauma</span>
+        </label>
+        <div class="category-content">
+          <button type="button" class="model-button" onclick="copiar('admissaoTraumaFem')">Admissão Trauma – Feminino</button>
+          <button type="button" class="model-button" onclick="copiar('admissaoTraumaMasc')">Admissão Trauma – Masculino</button>
+        </div>
       </div>
 
-      <div class="section">
-        <h2>🧾 Orientações / Prescrições (Alta)</h2>
-        <button type="button" onclick="copiar('altaDengue')">Dengue A ou B</button>
-        <button type="button" onclick="copiar('altaDorTraumatica')">Dor Traumática</button>
-        <button type="button" onclick="copiar('altaHerpesZoster')">Herpes Zóster</button>
-        <button type="button" onclick="copiar('altaIVAS')">IVAS</button>
-        <button type="button" onclick="copiar('altaNefrolitiase')">Nefrolitíase</button>
-        <button type="button" onclick="copiar('altaPNMSemComorb')">PNM Comunidade – leve (sem comorbidade)</button>
-        <button type="button" onclick="copiar('altaPNMComorb')">PNM Comunidade – leve (com comorbidades)</button>
-        <button type="button" onclick="copiar('altaPNMAlergia')">PNM – se alergia a β-lactâmicos / macrolídeos</button>
+      <div class="section sidebar-category">
+        <label class="category-header">
+          <input type="checkbox" class="category-toggle" />
+          <span class="category-title">🩺 Procedimentos</span>
+        </label>
+        <div class="category-content">
+          <button type="button" class="model-button" onclick="copiar('orotrachealIntubation')">Intubação Orotraqueal (IOT)</button>
+          <button type="button" class="model-button" onclick="copiar('cricothyroidotomy')">Cricotireoidostomia</button>
+          <button type="button" class="model-button" onclick="copiar('chestTubeDrainage')">Drenagem Torácica (selo d’água)</button>
+          <button type="button" class="model-button" onclick="copiar('thoracentesis')">Toracocentese</button>
+          <button type="button" class="model-button" onclick="copiar('resuscitativeThoracotomy')">Toracotomia de Reanimação</button>
+          <button type="button" class="model-button" onclick="copiar('synchronizedCardioversion')">Cardioversão Elétrica Sincronizada</button>
+          <button type="button" class="model-button" onclick="copiar('transvenousPacemaker')">Marcapasso Transvenoso</button>
+          <button type="button" class="model-button" onclick="copiar('pericardiocentesis')">Pericardiocentese</button>
+          <button type="button" class="model-button" onclick="copiar('centralVenousAccess')">Acesso Venoso Central (CVC)</button>
+          <button type="button" class="model-button" onclick="copiar('arterialPuncture')">Punção Arterial</button>
+          <button type="button" class="model-button" onclick="copiar('intraosseousAccess')">Acesso Intraósseo</button>
+          <button type="button" class="model-button" onclick="copiar('lumbarPuncture')">Punção Lombar</button>
+          <button type="button" class="model-button" onclick="copiar('paracentesis')">Paracentese</button>
+          <button type="button" class="model-button" onclick="copiar('urinaryCatheterization')">Sondagem Vesical</button>
+          <button type="button" class="model-button" onclick="copiar('enteralTubeInsertion')">Sondagem Nasoenteral/Nasogástrica</button>
+          <button type="button" class="model-button" onclick="copiar('immobilization')">Imobilização</button>
+          <button type="button" class="model-button" onclick="copiar('jointReduction')">Redução de Luxação</button>
+          <button type="button" class="model-button" onclick="copiar('woundSuture')">Sutura</button>
+          <button type="button" class="model-button" onclick="copiar('abscessDrainage')">Drenagem de Abscesso</button>
+          <button type="button" class="model-button" onclick="copiar('proceduralSedation')">Sedação para Procedimento</button>
+        </div>
       </div>
 
-      <div class="section">
-        <h2>🤖 Prompts de IA</h2>
-        <button type="button" onclick="copiar('promptResultadosLaboratoriaisLinha')">Resultados laboratoriais em linha</button>
+      <div class="section sidebar-category">
+        <label class="category-header">
+          <input type="checkbox" class="category-toggle" />
+          <span class="category-title">🧾 Orientações / Prescrições (Alta)</span>
+        </label>
+        <div class="category-content">
+          <button type="button" class="model-button" onclick="copiar('altaDengue')">Dengue A ou B</button>
+          <button type="button" class="model-button" onclick="copiar('altaDorTraumatica')">Dor Traumática</button>
+          <button type="button" class="model-button" onclick="copiar('altaHerpesZoster')">Herpes Zóster</button>
+          <button type="button" class="model-button" onclick="copiar('altaIVAS')">IVAS</button>
+          <button type="button" class="model-button" onclick="copiar('altaNefrolitiase')">Nefrolitíase</button>
+          <button type="button" class="model-button" onclick="copiar('altaPNMSemComorb')">PNM Comunidade – leve (sem comorbidade)</button>
+          <button type="button" class="model-button" onclick="copiar('altaPNMComorb')">PNM Comunidade – leve (com comorbidades)</button>
+          <button type="button" class="model-button" onclick="copiar('altaPNMAlergia')">PNM – se alergia a β-lactâmicos / macrolídeos</button>
+        </div>
+      </div>
+
+      <div class="section sidebar-category">
+        <label class="category-header">
+          <input type="checkbox" class="category-toggle" />
+          <span class="category-title">🤖 Prompts de IA</span>
+        </label>
+        <div class="category-content">
+          <button type="button" class="model-button" onclick="copiar('promptResultadosLaboratoriaisLinha')">Resultados laboratoriais em linha</button>
+        </div>
       </div>
     </aside>
 

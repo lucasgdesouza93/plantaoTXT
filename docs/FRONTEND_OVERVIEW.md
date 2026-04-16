@@ -6,7 +6,7 @@ There is a **single page** with no routing system.
 
 | Page | File | URL | Description |
 |------|------|-----|-------------|
-| Main (only) page | [index.html](../index.html) | `/` (root) | Sidebar with 13 buttons plus an editable preview panel |
+| Main (only) page | [index.html](../index.html) | `/` (root) | Sidebar with checkbox-controlled categories, 33 action buttons, and an editable preview panel |
 
 ---
 
@@ -18,10 +18,16 @@ Two-column desktop layout: fixed sidebar on the left, scrollable preview panel o
 <div class="layout">
   <aside class="sidebar">
     <h1>PlantãoTXT</h1>
-    <div class="section">Clínica</div>
-    <div class="section">Trauma</div>
-    <div class="section">Orientações / Prescrições (Alta)</div>
-    <div class="section">Prompts de IA</div>
+
+    <div class="section sidebar-category">
+      <label class="category-header">
+        <input type="checkbox" class="category-toggle">
+        <span class="category-title">Clínica</span>
+      </label>
+      <div class="category-content">
+        <button class="model-button" onclick="copiar('...')">
+      </div>
+    </div>
   </aside>
 
   <main class="preview">
@@ -47,7 +53,11 @@ There are no reusable component abstractions.
 
 | Element | Description | Source |
 |---------|-------------|--------|
-| Sidebar `<button>` elements | 13 buttons (`type="button"`), one per template or prompt | [index.html](../index.html) |
+| `.sidebar-category` | Card-like wrapper for each category | [index.html](../index.html), styled in [style.css](../style.css) |
+| `.category-header` | Clickable label that contains the checkbox and category title | [index.html](../index.html) |
+| `.category-toggle` | Checkbox that controls expanded/collapsed state; starts unchecked by default | initialized by [app.js](../app.js) |
+| `.category-content` | Wrapper that contains the buttons and is hidden when collapsed | [index.html](../index.html), toggled by `.collapsed` |
+| `.model-button` | Sidebar button for each template, procedure description, or prompt | [index.html](../index.html), selected by [app.js](../app.js) |
 | `#preview-empty` | Placeholder shown before any selection | [index.html](../index.html) |
 | `#preview-content` | Wrapper for header + body; hidden until first click | [index.html](../index.html) |
 | `#preview-title` | Shows the label of the selected button | populated by [app.js](../app.js) |
@@ -65,6 +75,7 @@ No state management framework is used.
 |-------|----------|------|
 | Toast timer reference | `window.__toastTimer` | Global variable (`setTimeout` ID) |
 | Toast DOM element | `#toast` in `document.body` | DOM reference, created on first use |
+| Category visibility state | `.collapsed` class on `.sidebar-category` | DOM class derived from checkbox state; initial state is collapsed because checkboxes start unchecked |
 
 The main content registry is `const textos`, assembled at module load time from the data files in [data/](../data/).
 
@@ -74,13 +85,15 @@ The main content registry is `const textos`, assembled at module load time from 
 
 There is no navigation. Every interaction is:
 
-1. User clicks a button in the sidebar.
-2. Button receives `.active` class and the previous one is cleared.
-3. Selected template/prompt appears in `#preview-body`; label appears in `#preview-title`.
-4. User can edit the content directly in the preview area.
-5. User clicks **"Copiar"**.
-6. `copiarPreview()` writes the current preview text to the clipboard.
-7. A temporary toast appears.
+1. Categories start recolhidas, and the user checks or unchecks a category header to show or hide its buttons.
+2. `initCategoryToggles()` updates `.collapsed` on the matching `.sidebar-category`.
+3. User clicks a `.model-button` in the sidebar.
+4. That button receives `.active` and the previous active model button is cleared.
+5. Selected template/prompt appears in `#preview-body`; label appears in `#preview-title`.
+6. User can edit the content directly in the preview area.
+7. User clicks **"Copiar"**.
+8. `copiarPreview()` writes the current preview text to the clipboard.
+9. A temporary toast appears.
 
 ---
 
@@ -94,6 +107,8 @@ File: [style.css](../style.css)
 | CSS organization | `:root` design tokens for colors, radii, and shadows |
 | Body background | `#08111f` plus a radial gradient accent |
 | Section background | Translucent dark panel with border and shadow |
+| Category header | Horizontal flex row with checkbox + title |
+| Collapsed state | `.sidebar-category.collapsed .category-content { display: none; }` |
 | Button color | Green accent token |
 | Preview font | `"Courier New", Courier, monospace` |
 | Sidebar width | `320px` on desktop; full-width stacked layout below `860px` |
