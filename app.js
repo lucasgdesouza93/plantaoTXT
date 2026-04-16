@@ -1,11 +1,13 @@
 import { clinicaTemplates } from './data/clinica.js';
 import { traumaTemplates } from './data/trauma.js';
 import { altaTemplates } from './data/alta.js';
+import { aiPromptTemplates } from './data/ia.js';
 
 const textos = {
   ...clinicaTemplates,
   ...traumaTemplates,
   ...altaTemplates,
+  ...aiPromptTemplates,
 };
 
 function copiar(tipo) {

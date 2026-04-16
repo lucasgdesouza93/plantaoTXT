@@ -2,7 +2,7 @@
 
 ## System Purpose
 
-**PlantãoTXT** is a lightweight, browser-based utility for Brazilian emergency medicine physicians. It provides pre-formatted clinical documentation templates that can be selected, reviewed, edited in the browser, and copied to the clipboard, reducing manual typing during emergency room shifts. All templates are written in Portuguese and follow standard Brazilian ER documentation conventions.
+**PlantãoTXT** is a lightweight, browser-based utility for Brazilian emergency medicine physicians. It provides pre-formatted clinical documentation templates and reusable AI prompts that can be selected, reviewed, edited in the browser, and copied to the clipboard, reducing manual typing during emergency room shifts.
 
 ---
 
@@ -10,12 +10,13 @@
 
 ```
 [Browser]
-    └── index.html              (single page — no router)
+    └── index.html               (single page — no router)
          ├── style.css           (visual styling)
          └── app.js              (entry point: imports data, exposes copiar/copy handlers)
               ├── data/clinica.js (clinical templates)
               ├── data/trauma.js  (trauma templates)
-              └── data/alta.js    (discharge prescription templates)
+              ├── data/alta.js    (discharge prescription templates)
+              └── data/ia.js      (frequently used AI prompts)
 ```
 
 - **Type:** Static, client-side only web application
@@ -23,8 +24,8 @@
 - **Backend:** None
 - **Database:** None
 - **Build system:** None
-- **Module system:** Native ES modules (`<script type="module">`) — no bundler
-- **Dependencies:** Zero (no npm, no CDN, no external libraries)
+- **Module system:** Native ES modules (`<script type="module">`)
+- **Dependencies:** Zero
 
 ---
 
@@ -35,7 +36,7 @@
 | Markup | HTML5 (`lang="pt-BR"`) |
 | Styling | CSS3 (plain, no framework) |
 | Logic | Vanilla JavaScript (ES2017+, async/await) |
-| Runtime | Browser (any modern browser) |
+| Runtime | Browser (modern browsers) |
 | Hosting | Any static file server |
 
 ---
@@ -43,33 +44,32 @@
 ## Main System Flow
 
 ```
-User selects a template
-    → onclick calls window.copiar('templateKey') [index.html:16-35]
-    → copiar() looks up key in textos object     [app.js:11-28]
-    → textos is assembled from data/ modules     [app.js:1-9]
+User selects a template or prompt
+    → onclick calls window.copiar('templateKey')
+    → copiar() looks up key in textos
+    → textos is assembled from data/ modules
     → selected button receives .active class
-    → preview panel shows the template text and title
+    → preview panel shows the selected text
 User clicks "Copiar"
-    → onclick calls window.copiarPreview()       [index.html:44]
-    → copiarPreview() reads editable preview text [app.js:30-50]
-    → tries navigator.clipboard.writeText()      [app.js:35]
-    → on failure: fallback via textarea + execCommand  [app.js:38-47]
-    → calls toast("Copiado ✓")                  [app.js:36 / 48]
-    → toast() renders a temporary notification   [app.js:52-77]
-    → notification fades out after 1100ms
+    → onclick calls window.copiarPreview()
+    → copiarPreview() reads editable preview text
+    → tries navigator.clipboard.writeText()
+    → on failure: fallback via textarea + execCommand
+    → calls toast("Copiado ✓")
 ```
 
 ---
 
 ## Template Categories
 
-The application contains **12 templates** grouped into 3 sections:
+The application contains **13 items** grouped into 4 sections:
 
-| Section | Templates |
-|---------|-----------|
+| Section | Items |
+|---------|-------|
 | Clínica | Admissão – Sala de Emergência, Evolução – Sala de Emergência |
 | Trauma | Admissão Trauma – Feminino, Admissão Trauma – Masculino |
 | Orientações / Prescrições (Alta) | Dengue, Dor Traumática, Herpes Zóster, IVAS, Nefrolitíase, PNM sem comorbidade, PNM com comorbidade, PNM – alergia a β-lactâmicos/macrolídeos |
+| Prompts de IA | Resultados laboratoriais em linha |
 
 ---
 
@@ -77,9 +77,10 @@ The application contains **12 templates** grouped into 3 sections:
 
 | File | Path | Role |
 |------|------|------|
-| HTML shell | [index.html](../index.html) | DOM structure, 12-button layout |
-| Entry point | [app.js](../app.js) | Imports data modules, merges `textos`, defines `copiar()`, `copiarPreview()`, and `toast()`, exposes `window.copiar` and `window.copiarPreview` |
+| HTML shell | [index.html](../index.html) | DOM structure, sidebar sections, preview panel |
+| Entry point | [app.js](../app.js) | Imports data modules, merges `textos`, defines `copiar()`, `copiarPreview()`, and `toast()` |
 | Clinical templates | [data/clinica.js](../data/clinica.js) | `admissaoClinica`, `evolucao` |
 | Trauma templates | [data/trauma.js](../data/trauma.js) | `admissaoTraumaFem`, `admissaoTraumaMasc` |
 | Discharge templates | [data/alta.js](../data/alta.js) | 8 discharge prescription templates |
+| AI prompt templates | [data/ia.js](../data/ia.js) | `promptResultadosLaboratoriaisLinha` |
 | Styling | [style.css](../style.css) | Dark responsive theme, layout, cards, buttons, and preview panel |

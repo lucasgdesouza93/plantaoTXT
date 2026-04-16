@@ -4,46 +4,27 @@
 
 **No database exists in this project.**
 
-All data is hardcoded as JavaScript string literals split across three ES module files under [data/](../data/). The entry point [app.js](../app.js) imports and merges them at load time.
-
----
-
-## Tables
-
-Not identified in code.
-
----
-
-## Relationships
-
-Not identified in code.
-
----
-
-## Indexes
-
-Not identified in code.
-
----
-
-## RLS Policies
-
-Not identified in code.
+All data is hardcoded as JavaScript string literals split across four ES module files under [data/](../data/). The entry point [app.js](../app.js) imports and merges them at load time.
 
 ---
 
 ## In-Memory Data Layer
 
-Template data is split into three ES module files. Each exports a named object. [app.js:5-9](../app.js) merges them:
+Each data file exports a named object. `app.js` merges them into:
 
 ```js
-const textos = { ...clinicaTemplates, ...traumaTemplates, ...altaTemplates };
+const textos = {
+  ...clinicaTemplates,
+  ...traumaTemplates,
+  ...altaTemplates,
+  ...aiPromptTemplates,
+};
 ```
 
-`textos` is a plain JavaScript object acting as a key-value store mapping template keys to multi-line string values:
+`textos` is a plain JavaScript object acting as a key-value store:
 
-```
-const textos = { [key: string]: string }
+```js
+const textos = { [key: string]: string };
 ```
 
 ### Template Keys and Descriptions
@@ -62,16 +43,6 @@ const textos = { [key: string]: string }
 | `altaPNMComorb` | [data/alta.js](../data/alta.js) | Alta | PNM Comunidade – leve (com comorbidades) |
 | `altaPNMSemComorb` | [data/alta.js](../data/alta.js) | Alta | PNM Comunidade – leve (sem comorbidade) |
 | `altaPNMAlergia` | [data/alta.js](../data/alta.js) | Alta | PNM – se alergia a β-lactâmicos / macrolídeos |
+| `promptResultadosLaboratoriaisLinha` | [data/ia.js](../data/ia.js) | Prompts de IA | Resultados laboratoriais em linha |
 
-**Total keys:** 12. **Total buttons in index.html:** 12.
-
-### Template Content Format
-
-Each value is a plain text multi-line string (template literal). Templates are structured as:
-- Uppercase section headers
-- Blank lines between sections
-- Fill-in placeholders (e.g., `PA  : MMHG`, `DATA DA ADMISSÃO:`)
-- Medical protocol steps using `>` for sub-items
-- Warning signs (`ATENÇÃO! RETORNAR AO PRONTO-ATENDIMENTO CASO:`) for discharge templates
-
-There is no schema enforcement — values are free-form strings intended for direct clipboard use.
+**Total keys:** 13. **Total buttons in `index.html`:** 13.
