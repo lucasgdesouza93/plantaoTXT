@@ -1,0 +1,9 @@
+{
+  "files.eol": "\n",
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/.git/index": true,
+    "**/.git/index.lock": true
+  }
+}
