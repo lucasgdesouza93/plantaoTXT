@@ -49,12 +49,12 @@ User optionally collapses or expands a sidebar category
     → checkbox in .category-header toggles .collapsed on .sidebar-category
     → .category-content is shown or hidden
 User selects a template or prompt
-    → onclick calls window.copiar('templateKey')
+    → click listener on .model-button[data-template] calls copiar(key, btn)
     → copiar() looks up key in textos
     → selected button receives .active class
     → preview panel shows the selected text
 User clicks "Copiar"
-    → onclick calls window.copiarPreview()
+    → click listener on #btn-copy calls copiarPreview()
     → copiarPreview() reads editable preview text
     → tries navigator.clipboard.writeText()
     → on failure: fallback via textarea + execCommand

@@ -36,22 +36,29 @@ All templates, procedure descriptions, and reusable prompts are stored as string
 
 The application ships with a single dark color scheme and no theme toggle.
 
-## AD-07: Inline Event Handlers
+## AD-07: Event Listeners via `data-template` Attributes
 
-Button click events are bound via `onclick` attributes directly in HTML. This keeps wiring minimal for the small, static set of actions.
+Button click events are bound via `addEventListener` in `initModelButtons()` and `initCopyButton()`. Buttons carry a `data-template` attribute identifying the template key, which eliminates inline handlers and satisfies the strict Content Security Policy.
 
 ## AD-08: Toast Notification via Dynamically Created DOM Element
 
 The toast element is created programmatically on first use and then reused.
 
-## AD-09: No Security Model
+## AD-09: Defense-in-Depth Security for a Static App
 
-There is no authentication, authorization, or application-level persistence because the app is static and local-only in behavior.
+Although there is no authentication or persistence, the following controls are enforced:
+
+- **Content Security Policy** — `default-src 'none'; script-src 'self'; style-src 'self'; base-uri 'none'; form-action 'none'` — blocks injected scripts, styles, and unauthorized navigations. Applied both as a `<meta>` tag and via `_headers` (HTTP header for Netlify/Cloudflare Pages).
+- **`frame-ancestors 'none'` / `X-Frame-Options: DENY`** — prevents clickjacking by forbidding iframe embedding.
+- **Clickjacking JS guard** — `app.js` hides the page and attempts a redirect if `window.top !== window.self`.
+- **`Referrer-Policy: no-referrer`** — prevents URL leakage in resource requests.
+- **`X-Content-Type-Options: nosniff`** — disables browser MIME sniffing.
+- **`Permissions-Policy`** — explicitly denies camera, microphone, geolocation, and payment APIs.
 
 ## AD-10: Portuguese as the Only Language
 
 All UI text and template, procedure, and prompt content are written in Brazilian Portuguese.
 
-## AD-11: ES Modules for Data Files, Window Handlers for HTML Compatibility
+## AD-11: ES Modules for All Logic, No Global Leakage
 
-Data files use native ES modules, while `window.copiar` and `window.copiarPreview` bridge module scope to inline HTML handlers.
+Data files use native ES modules. `app.js` is loaded as `<script type="module">` and does not expose any function to `window`. Event binding is done entirely within module scope via `initModelButtons()` and `initCopyButton()`.

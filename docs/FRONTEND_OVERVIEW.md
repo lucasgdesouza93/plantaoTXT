@@ -25,7 +25,7 @@ Two-column desktop layout: fixed sidebar on the left, scrollable preview panel o
         <span class="category-title">Clínica</span>
       </label>
       <div class="category-content">
-        <button class="model-button" onclick="copiar('...')">
+        <button class="model-button" data-template="...">
       </div>
     </div>
   </aside>
@@ -35,7 +35,7 @@ Two-column desktop layout: fixed sidebar on the left, scrollable preview panel o
     <div id="preview-content">
       <div id="preview-header">
         <div id="preview-title">
-        <button id="btn-copy" onclick="copiarPreview()">
+        <button id="btn-copy">
       </div>
       <pre id="preview-body" contenteditable="true">
     </div>
@@ -73,7 +73,7 @@ No state management framework is used.
 
 | State | Location | Type |
 |-------|----------|------|
-| Toast timer reference | `window.__toastTimer` | Global variable (`setTimeout` ID) |
+| Toast timer reference | `toastTimer` (module scope in `app.js`) | Module-level variable (`setTimeout` ID) |
 | Toast DOM element | `#toast` in `document.body` | DOM reference, created on first use |
 | Category visibility state | `.collapsed` class on `.sidebar-category` | DOM class derived from checkbox state; initial state is collapsed because checkboxes start unchecked |
 
@@ -87,8 +87,8 @@ There is no navigation. Every interaction is:
 
 1. Categories start recolhidas, and the user checks or unchecks a category header to show or hide its buttons.
 2. `initCategoryToggles()` updates `.collapsed` on the matching `.sidebar-category`.
-3. User clicks a `.model-button` in the sidebar.
-4. That button receives `.active` and the previous active model button is cleared.
+3. User clicks a `.model-button[data-template]` in the sidebar.
+4. The click listener calls `copiar(btn.dataset.template, btn)`; that button receives `.active` and the previous active model button is cleared.
 5. Selected template/prompt appears in `#preview-body`; label appears in `#preview-title`.
 6. User can edit the content directly in the preview area.
 7. User clicks **"Copiar"**.

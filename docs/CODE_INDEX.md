@@ -5,8 +5,9 @@
 ```
 d:/Apps/PlantaoTXT/
 ├── index.html          Single-page HTML shell
-├── app.js              Entry point: imports data modules, initializes sidebar toggles, and exposes copy handlers globally
+├── app.js              Entry point: imports data modules, wires event listeners, initializes sidebar toggles
 ├── style.css           All visual styling
+├── _headers            HTTP security headers for Netlify / Cloudflare Pages
 ├── data/
 │   ├── clinica.js      Clinical admission and progression templates
 │   ├── trauma.js       Trauma admission templates
@@ -54,12 +55,14 @@ Each file in [data/](../data/) exports a named object that `app.js` merges into 
 
 | Function | Description |
 |----------|-------------|
-| `copiar(tipo)` | Looks up the selected key, updates active model button state, and shows the text in the preview panel |
+| `copiar(tipo, btn)` | Looks up the selected key, updates active model button state, and shows the text in the preview panel |
 | `copiarPreview()` | Copies the current editable preview content to clipboard |
 | `toast(msg)` | Creates or reuses the toast notification element |
+| `initModelButtons()` | Attaches click listeners to all `.model-button[data-template]` elements |
+| `initCopyButton()` | Attaches the click listener to `#btn-copy` |
 | `initCategoryToggles()` | Binds `.category-toggle` checkboxes and toggles `.collapsed` on each `.sidebar-category` |
 
-`app.js` imports all data modules and exposes `window.copiar` and `window.copiarPreview` for inline HTML handlers.
+`app.js` imports all data modules and wires all event listeners within module scope. No globals are exposed on `window`.
 
 ### CSS — Styling
 

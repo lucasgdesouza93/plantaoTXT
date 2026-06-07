@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; base-uri 'none'; form-action 'none';" />
+  <meta name="referrer" content="no-referrer" />
   <title>PlantãoTXT</title>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -17,8 +19,8 @@
           <span class="category-title">🏥 Clínica</span>
         </label>
         <div class="category-content">
-          <button type="button" class="model-button" onclick="copiar('admissaoClinica')">Admissão – Sala de Emergência</button>
-          <button type="button" class="model-button" onclick="copiar('evolucao')">Evolução – Sala de Emergência</button>
+          <button type="button" class="model-button" data-template="admissaoClinica">Admissão – Sala de Emergência</button>
+          <button type="button" class="model-button" data-template="evolucao">Evolução – Sala de Emergência</button>
         </div>
       </div>
 
@@ -28,8 +30,8 @@
           <span class="category-title">🚑 Trauma</span>
         </label>
         <div class="category-content">
-          <button type="button" class="model-button" onclick="copiar('admissaoTraumaFem')">Admissão Trauma – Feminino</button>
-          <button type="button" class="model-button" onclick="copiar('admissaoTraumaMasc')">Admissão Trauma – Masculino</button>
+          <button type="button" class="model-button" data-template="admissaoTraumaFem">Admissão Trauma – Feminino</button>
+          <button type="button" class="model-button" data-template="admissaoTraumaMasc">Admissão Trauma – Masculino</button>
         </div>
       </div>
 
@@ -39,26 +41,26 @@
           <span class="category-title">🩺 Procedimentos</span>
         </label>
         <div class="category-content">
-          <button type="button" class="model-button" onclick="copiar('orotrachealIntubation')">Intubação Orotraqueal (IOT)</button>
-          <button type="button" class="model-button" onclick="copiar('cricothyroidotomy')">Cricotireoidostomia</button>
-          <button type="button" class="model-button" onclick="copiar('chestTubeDrainage')">Drenagem Torácica (selo d’água)</button>
-          <button type="button" class="model-button" onclick="copiar('thoracentesis')">Toracocentese</button>
-          <button type="button" class="model-button" onclick="copiar('resuscitativeThoracotomy')">Toracotomia de Reanimação</button>
-          <button type="button" class="model-button" onclick="copiar('synchronizedCardioversion')">Cardioversão Elétrica Sincronizada</button>
-          <button type="button" class="model-button" onclick="copiar('transvenousPacemaker')">Marcapasso Transvenoso</button>
-          <button type="button" class="model-button" onclick="copiar('pericardiocentesis')">Pericardiocentese</button>
-          <button type="button" class="model-button" onclick="copiar('centralVenousAccess')">Acesso Venoso Central (CVC)</button>
-          <button type="button" class="model-button" onclick="copiar('arterialPuncture')">Punção Arterial</button>
-          <button type="button" class="model-button" onclick="copiar('intraosseousAccess')">Acesso Intraósseo</button>
-          <button type="button" class="model-button" onclick="copiar('lumbarPuncture')">Punção Lombar</button>
-          <button type="button" class="model-button" onclick="copiar('paracentesis')">Paracentese</button>
-          <button type="button" class="model-button" onclick="copiar('urinaryCatheterization')">Sondagem Vesical</button>
-          <button type="button" class="model-button" onclick="copiar('enteralTubeInsertion')">Sondagem Nasoenteral/Nasogástrica</button>
-          <button type="button" class="model-button" onclick="copiar('immobilization')">Imobilização</button>
-          <button type="button" class="model-button" onclick="copiar('jointReduction')">Redução de Luxação</button>
-          <button type="button" class="model-button" onclick="copiar('woundSuture')">Sutura</button>
-          <button type="button" class="model-button" onclick="copiar('abscessDrainage')">Drenagem de Abscesso</button>
-          <button type="button" class="model-button" onclick="copiar('proceduralSedation')">Sedação para Procedimento</button>
+          <button type="button" class="model-button" data-template="orotrachealIntubation">Intubação Orotraqueal (IOT)</button>
+          <button type="button" class="model-button" data-template="cricothyroidotomy">Cricotireoidostomia</button>
+          <button type="button" class="model-button" data-template="chestTubeDrainage">Drenagem Torácica (selo d'água)</button>
+          <button type="button" class="model-button" data-template="thoracentesis">Toracocentese</button>
+          <button type="button" class="model-button" data-template="resuscitativeThoracotomy">Toracotomia de Reanimação</button>
+          <button type="button" class="model-button" data-template="synchronizedCardioversion">Cardioversão Elétrica Sincronizada</button>
+          <button type="button" class="model-button" data-template="transvenousPacemaker">Marcapasso Transvenoso</button>
+          <button type="button" class="model-button" data-template="pericardiocentesis">Pericardiocentese</button>
+          <button type="button" class="model-button" data-template="centralVenousAccess">Acesso Venoso Central (CVC)</button>
+          <button type="button" class="model-button" data-template="arterialPuncture">Punção Arterial</button>
+          <button type="button" class="model-button" data-template="intraosseousAccess">Acesso Intraósseo</button>
+          <button type="button" class="model-button" data-template="lumbarPuncture">Punção Lombar</button>
+          <button type="button" class="model-button" data-template="paracentesis">Paracentese</button>
+          <button type="button" class="model-button" data-template="urinaryCatheterization">Sondagem Vesical</button>
+          <button type="button" class="model-button" data-template="enteralTubeInsertion">Sondagem Nasoenteral/Nasogástrica</button>
+          <button type="button" class="model-button" data-template="immobilization">Imobilização</button>
+          <button type="button" class="model-button" data-template="jointReduction">Redução de Luxação</button>
+          <button type="button" class="model-button" data-template="woundSuture">Sutura</button>
+          <button type="button" class="model-button" data-template="abscessDrainage">Drenagem de Abscesso</button>
+          <button type="button" class="model-button" data-template="proceduralSedation">Sedação para Procedimento</button>
         </div>
       </div>
 
@@ -68,14 +70,14 @@
           <span class="category-title">🧾 Orientações / Prescrições (Alta)</span>
         </label>
         <div class="category-content">
-          <button type="button" class="model-button" onclick="copiar('altaDengue')">Dengue A ou B</button>
-          <button type="button" class="model-button" onclick="copiar('altaDorTraumatica')">Dor Traumática</button>
-          <button type="button" class="model-button" onclick="copiar('altaHerpesZoster')">Herpes Zóster</button>
-          <button type="button" class="model-button" onclick="copiar('altaIVAS')">IVAS</button>
-          <button type="button" class="model-button" onclick="copiar('altaNefrolitiase')">Nefrolitíase</button>
-          <button type="button" class="model-button" onclick="copiar('altaPNMSemComorb')">PNM Comunidade – leve (sem comorbidade)</button>
-          <button type="button" class="model-button" onclick="copiar('altaPNMComorb')">PNM Comunidade – leve (com comorbidades)</button>
-          <button type="button" class="model-button" onclick="copiar('altaPNMAlergia')">PNM – se alergia a β-lactâmicos / macrolídeos</button>
+          <button type="button" class="model-button" data-template="altaDengue">Dengue A ou B</button>
+          <button type="button" class="model-button" data-template="altaDorTraumatica">Dor Traumática</button>
+          <button type="button" class="model-button" data-template="altaHerpesZoster">Herpes Zóster</button>
+          <button type="button" class="model-button" data-template="altaIVAS">IVAS</button>
+          <button type="button" class="model-button" data-template="altaNefrolitiase">Nefrolitíase</button>
+          <button type="button" class="model-button" data-template="altaPNMSemComorb">PNM Comunidade – leve (sem comorbidade)</button>
+          <button type="button" class="model-button" data-template="altaPNMComorb">PNM Comunidade – leve (com comorbidades)</button>
+          <button type="button" class="model-button" data-template="altaPNMAlergia">PNM – se alergia a β-lactâmicos / macrolídeos</button>
         </div>
       </div>
 
@@ -85,8 +87,8 @@
           <span class="category-title">🤖 Prompts de IA</span>
         </label>
         <div class="category-content">
-          <button type="button" class="model-button" onclick="copiar('promptInterconsulta')">Pedido de interconsulta</button>
-          <button type="button" class="model-button" onclick="copiar('promptResultadosLaboratoriaisLinha')">Resultados laboratoriais em linha</button>
+          <button type="button" class="model-button" data-template="promptInterconsulta">Pedido de interconsulta</button>
+          <button type="button" class="model-button" data-template="promptResultadosLaboratoriaisLinha">Resultados laboratoriais em linha</button>
         </div>
       </div>
     </aside>
@@ -96,7 +98,7 @@
       <div id="preview-content" hidden>
         <div id="preview-header">
           <div id="preview-title"></div>
-          <button type="button" id="btn-copy" onclick="copiarPreview()">Copiar</button>
+          <button type="button" id="btn-copy">Copiar</button>
         </div>
         <pre id="preview-body" contenteditable="true" spellcheck="false"></pre>
       </div>

@@ -4,6 +4,12 @@ import { altaTemplates } from './data/alta.js';
 import { aiPromptTemplates } from './data/ia.js';
 import { procedureTemplates } from './data/procedimentos.js';
 
+// Clickjacking guard: refuse to run inside a frame
+if (window.top !== window.self) {
+  document.documentElement.style.display = 'none';
+  try { window.top.location = window.self.location; } catch (_) {}
+}
+
 const textos = {
   ...clinicaTemplates,
   ...traumaTemplates,
@@ -12,19 +18,15 @@ const textos = {
   ...procedureTemplates,
 };
 
-function copiar(tipo) {
-  const texto = textos[tipo];
-  if (!texto) {
-    alert('Modelo não encontrado.');
-    return;
-  }
+let toastTimer;
 
-  // Highlight active button
-  document.querySelectorAll('.model-button').forEach(button => button.classList.remove('active'));
-  const btn = document.querySelector(`.model-button[onclick*="'${tipo}'"]`);
+function copiar(tipo, btn) {
+  const texto = textos[tipo];
+  if (!texto) return;
+
+  document.querySelectorAll('.model-button').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
 
-  // Show template in preview panel
   document.getElementById('preview-empty').hidden = true;
   document.getElementById('preview-content').hidden = false;
   document.getElementById('preview-title').textContent = btn ? btn.textContent : tipo;
@@ -38,13 +40,11 @@ async function copiarPreview() {
   try {
     await navigator.clipboard.writeText(texto);
     toast('Copiado ✓');
-  } catch (e) {
-    // Fallback: cria textarea temporário
+  } catch {
     const ta = document.createElement('textarea');
     ta.value = texto;
     ta.setAttribute('readonly', '');
-    ta.style.position = 'fixed';
-    ta.style.left = '-9999px';
+    ta.style.cssText = 'position:fixed;left:-9999px;top:0;';
     document.body.appendChild(ta);
     ta.select();
     document.execCommand('copy');
@@ -58,33 +58,48 @@ function toast(msg) {
   if (!el) {
     el = document.createElement('div');
     el.id = 'toast';
-    el.style.position = 'fixed';
-    el.style.left = '50%';
-    el.style.bottom = '18px';
-    el.style.transform = 'translateX(-50%)';
-    el.style.background = 'rgba(15, 23, 42, 0.92)';
-    el.style.border = '1px solid rgba(148, 163, 184, 0.25)';
-    el.style.color = '#fff';
-    el.style.padding = '10px 14px';
-    el.style.borderRadius = '12px';
-    el.style.fontWeight = '600';
-    el.style.boxShadow = '0 10px 30px rgba(0,0,0,0.35)';
-    el.style.zIndex = '9999';
-    el.style.opacity = '0';
-    el.style.transition = 'opacity 160ms ease';
+    el.setAttribute('role', 'status');
+    el.setAttribute('aria-live', 'polite');
+    el.style.cssText = [
+      'position:fixed',
+      'left:50%',
+      'bottom:18px',
+      'transform:translateX(-50%)',
+      'background:rgba(15,23,42,0.92)',
+      'border:1px solid rgba(148,163,184,0.25)',
+      'color:#fff',
+      'padding:10px 14px',
+      'border-radius:12px',
+      'font-weight:600',
+      'box-shadow:0 10px 30px rgba(0,0,0,0.35)',
+      'z-index:9999',
+      'opacity:0',
+      'transition:opacity 160ms ease',
+      'pointer-events:none',
+    ].join(';');
     document.body.appendChild(el);
   }
   el.textContent = msg;
   el.style.opacity = '1';
-  clearTimeout(window.__toastTimer);
-  window.__toastTimer = setTimeout(() => (el.style.opacity = '0'), 1100);
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { el.style.opacity = '0'; }, 1100);
+}
+
+function initModelButtons() {
+  document.querySelectorAll('.model-button[data-template]').forEach(btn => {
+    btn.addEventListener('click', () => copiar(btn.dataset.template, btn));
+  });
+}
+
+function initCopyButton() {
+  const btn = document.getElementById('btn-copy');
+  if (btn) btn.addEventListener('click', copiarPreview);
 }
 
 function initCategoryToggles() {
   document.querySelectorAll('.category-toggle').forEach(toggle => {
     const category = toggle.closest('.sidebar-category');
     if (!category) return;
-
     category.classList.toggle('collapsed', !toggle.checked);
     toggle.addEventListener('change', event => {
       const parentCategory = event.target.closest('.sidebar-category');
@@ -94,8 +109,6 @@ function initCategoryToggles() {
   });
 }
 
+initModelButtons();
+initCopyButton();
 initCategoryToggles();
-
-// Expose to inline onclick handlers in index.html
-window.copiar = copiar;
-window.copiarPreview = copiarPreview;
