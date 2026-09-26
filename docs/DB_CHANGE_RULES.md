@@ -33,14 +33,14 @@ Example:
 import { newCategoryTemplates } from './data/newcategory.js';
 
 const textos = {
-  ...clinicaTemplates,
-  ...traumaTemplates,
-  ...procedureTemplates,
   ...altaTemplates,
   ...aiPromptTemplates,
+  ...procedureTemplates,
   ...newCategoryTemplates,
 };
 ```
+
+To add or change an **evolução form** instead, edit `TEMPLATES` in [data/evolucao-modelos.js](../data/evolucao-modelos.js) — the engine needs no change. A new model also needs a `.model-button[data-form="<id>"]` in [index.html](../index.html). Beware that field ids are derived from section index and label, so renaming a label or reordering sections discards what a user had already filled in for that model in an open tab.
 
 ### Rule 5: Test Selection and Clipboard Copy After Any Change
 
@@ -51,6 +51,13 @@ There is no automated test suite. After changes to [app.js](../app.js), [index.h
 3. Click each modified or new button.
 4. Copy the preview content.
 5. Verify the pasted text matches the intended content.
+
+For changes to an evolução form, also check:
+
+6. The form mounts and the text panel shows the title and date/time.
+7. Empty fields stay out of the generated text; filled ones appear with the expected label.
+8. Switching to a static template and back preserves what was filled in.
+9. Switching Sexo converts the `{o|a}` agreement in text already written.
 
 ### Rule 6: Preserve UTF-8 Encoding
 

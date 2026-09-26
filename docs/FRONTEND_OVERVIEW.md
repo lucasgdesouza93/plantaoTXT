@@ -6,7 +6,14 @@ There is a **single page** with no routing system.
 
 | Page | File | URL | Description |
 |------|------|-----|-------------|
-| Main (only) page | [index.html](../index.html) | `/` (root) | Sidebar with checkbox-controlled categories, 33 action buttons, and an editable preview panel |
+| Main (only) page | [index.html](../index.html) | `/` (root) | Sidebar with checkbox-controlled categories, 36 action buttons, and a preview area with two mutually exclusive modes |
+
+The preview area has two modes, never visible at the same time:
+
+| Mode | Container | Triggered by | Content |
+|------|-----------|--------------|---------|
+| Text | `#preview-content` | `.model-button[data-template]` | Editable `<pre>` with a fixed template |
+| Form | `#preview-form` | `.model-button[data-form]` | Interactive evolução form built by `mountEvolucao()` |
 
 ---
 
@@ -22,25 +29,43 @@ Two-column desktop layout: fixed sidebar on the left, scrollable preview panel o
     <div class="section sidebar-category">
       <label class="category-header">
         <input type="checkbox" class="category-toggle">
-        <span class="category-title">Clínica</span>
+        <span class="category-title">Evolução</span>
       </label>
       <div class="category-content">
-        <button class="model-button" data-template="...">
+        <button class="model-button" data-form="...">      <!-- abre um formulário -->
+        <button class="model-button" data-template="...">  <!-- mostra um texto -->
       </div>
     </div>
   </aside>
 
   <main class="preview">
     <div id="preview-empty">
-    <div id="preview-content">
+    <div id="preview-content">          <!-- modo texto -->
       <div id="preview-header">
         <div id="preview-title">
         <button id="btn-copy">
       </div>
       <pre id="preview-body" contenteditable="true">
     </div>
+    <div id="preview-form">             <!-- modo formulário, preenchido pelo motor -->
   </main>
 </div>
+```
+
+The evolução form is built entirely by [evolucao-engine.js](../evolucao-engine.js) inside `#preview-form`:
+
+```
+<div class="ev-root">
+  <div class="ev-top">            data/hora · agora · Limpar modelo · Copiar evolução
+  <div class="ev-main">
+    <div>                         <p class="ev-desc"> + <form class="ev-form">
+      <section class="ev-card">   uma por seção do modelo
+        <div class="ev-card-h">   título + botão "Tudo normal"
+        <div class="ev-grid">     <div class="ev-field"> por campo
+    <aside class="ev-side">       painel de saída (sticky)
+      <div class="ev-outcard">
+        <div class="ev-edited">   aviso de edição manual + "Regenerar"
+        <textarea class="ev-out"> texto para o prontuário
 ```
 
 File references: [index.html](../index.html)
@@ -57,7 +82,9 @@ There are no reusable component abstractions.
 | `.category-header` | Clickable label that contains the checkbox and category title | [index.html](../index.html) |
 | `.category-toggle` | Checkbox that controls expanded/collapsed state; starts unchecked by default | initialized by [app.js](../app.js) |
 | `.category-content` | Wrapper that contains the buttons and is hidden when collapsed | [index.html](../index.html), toggled by `.collapsed` |
-| `.model-button` | Sidebar button for each template, procedure description, or prompt | [index.html](../index.html), selected by [app.js](../app.js) |
+| `.model-button` | Sidebar button for each template, procedure description, prompt, or evolução form | [index.html](../index.html), selected by [app.js](../app.js) |
+| `#preview-form` | Container for the evolução form; hidden while in text mode | [index.html](../index.html), filled by [evolucao-engine.js](../evolucao-engine.js) |
+| `.ev-*` | Every element of the evolução form (cards, fields, chips, output panel) | created by [evolucao-engine.js](../evolucao-engine.js), styled in [evolucao.css](../evolucao.css) |
 | `#preview-empty` | Placeholder shown before any selection | [index.html](../index.html) |
 | `#preview-content` | Wrapper for header + body; hidden until first click | [index.html](../index.html) |
 | `#preview-title` | Shows the label of the selected button | populated by [app.js](../app.js) |
@@ -76,8 +103,10 @@ No state management framework is used.
 | Toast timer reference | `toastTimer` (module scope in `app.js`) | Module-level variable (`setTimeout` ID) |
 | Toast DOM element | `#toast` in `document.body` | DOM reference, created on first use |
 | Category visibility state | `.collapsed` class on `.sidebar-category` | DOM class derived from checkbox state; initial state is collapsed because checkboxes start unchecked |
+| Filled form values | `sessionStorage` key `evolucao.v1` | `{ values: { <modelId>: { <fieldId>: string \| string[] } } }`, one bucket per model |
+| Active form context | `cur` (module scope in `evolucao-engine.js`) | Nodes, CALC/Glasgow indexes, and the manual-edit flag of the mounted form |
 
-The main content registry is `const textos`, assembled at module load time from the data files in [data/](../data/).
+The main content registry is `const textos`, assembled at module load time from the text data files in [data/](../data/). Evolução form values do **not** live there: they are written to `sessionStorage` on every keystroke, so they survive switching models or jumping to a static template and back, and disappear when the tab is closed. The date/time field is not persisted — it resets to "now" on each mount.
 
 ---
 
@@ -87,13 +116,24 @@ There is no navigation. Every interaction is:
 
 1. Categories start recolhidas, and the user checks or unchecks a category header to show or hide its buttons.
 2. `initCategoryToggles()` updates `.collapsed` on the matching `.sidebar-category`.
+
+**Static text:**
+
 3. User clicks a `.model-button[data-template]` in the sidebar.
 4. The click listener calls `copiar(btn.dataset.template, btn)`; that button receives `.active` and the previous active model button is cleared.
-5. Selected template/prompt appears in `#preview-body`; label appears in `#preview-title`.
-6. User can edit the content directly in the preview area.
-7. User clicks **"Copiar"**.
-8. `copiarPreview()` writes the current preview text to the clipboard.
-9. A temporary toast appears.
+5. Any mounted form is unmounted and `#preview-form` is hidden.
+6. Selected template/prompt appears in `#preview-body`; label appears in `#preview-title`.
+7. User can edit the content directly in the preview area.
+8. User clicks **"Copiar"**; `copiarPreview()` writes the preview text to the clipboard and a toast appears.
+
+**Evolução form:**
+
+3. User clicks a `.model-button[data-form]` in the sidebar.
+4. The click listener calls `abrirFormulario(btn.dataset.form, btn)`; `#preview-content` is hidden and `#preview-form` shown.
+5. `mountEvolucao()` renders the model's sections and restores whatever was already filled in for that model.
+6. Every edit calls `set()` → `sessionStorage` → `refresh()`, which rebuilds the text in `.ev-out`. Empty fields never appear in the text.
+7. Editing `.ev-out` by hand raises the "texto editado à mão" warning and freezes regeneration until **Regenerar** is clicked.
+8. User clicks **"Copiar evolução"** (or `Ctrl`/`Cmd`+`Enter`); the engine writes to the clipboard and calls the same `toast()` from `app.js`.
 
 ---
 
@@ -124,5 +164,7 @@ File: [style.css](../style.css)
 | `async/await` | ES2017+ browsers | None |
 | ES modules (`type="module"`) | Modern browsers | None |
 | CSS variables | Modern browsers | None |
+| `sessionStorage` | All browsers | `try/catch`: the form still works, it just stops remembering |
+| Regex lookbehind + `\p{L}` (gender agreement in `applySex()`) | Chrome 62+, Firefox 78+, **Safari 16.4+** | None — this is the narrowest requirement in the app |
 
 The page should be served over HTTP/HTTPS because `app.js` is loaded as an ES module.

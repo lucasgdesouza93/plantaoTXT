@@ -1,8 +1,7 @@
-import { clinicaTemplates } from './data/clinica.js';
-import { traumaTemplates } from './data/trauma.js';
 import { altaTemplates } from './data/alta.js';
 import { aiPromptTemplates } from './data/ia.js';
 import { procedureTemplates } from './data/procedimentos.js';
+import { mountEvolucao, unmountEvolucao } from './evolucao-engine.js';
 
 // Clickjacking guard: refuse to run inside a frame
 if (window.top !== window.self) {
@@ -11,8 +10,6 @@ if (window.top !== window.self) {
 }
 
 const textos = {
-  ...clinicaTemplates,
-  ...traumaTemplates,
   ...altaTemplates,
   ...aiPromptTemplates,
   ...procedureTemplates,
@@ -27,10 +24,27 @@ function copiar(tipo, btn) {
   document.querySelectorAll('.model-button').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
 
+  const form = document.getElementById('preview-form');
+  unmountEvolucao(form);
+  form.hidden = true;
+
   document.getElementById('preview-empty').hidden = true;
   document.getElementById('preview-content').hidden = false;
   document.getElementById('preview-title').textContent = btn ? btn.textContent : tipo;
   document.getElementById('preview-body').textContent = texto;
+}
+
+// Modo formulário: o painel de texto sai de cena e o motor monta o formulário do modelo.
+function abrirFormulario(modelo, btn) {
+  document.querySelectorAll('.model-button').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+
+  document.getElementById('preview-empty').hidden = true;
+  document.getElementById('preview-content').hidden = true;
+
+  const form = document.getElementById('preview-form');
+  form.hidden = false;
+  mountEvolucao(form, modelo, toast);
 }
 
 async function copiarPreview() {
@@ -91,6 +105,12 @@ function initModelButtons() {
   });
 }
 
+function initFormButtons() {
+  document.querySelectorAll('.model-button[data-form]').forEach(btn => {
+    btn.addEventListener('click', () => abrirFormulario(btn.dataset.form, btn));
+  });
+}
+
 function initCopyButton() {
   const btn = document.getElementById('btn-copy');
   if (btn) btn.addEventListener('click', copiarPreview);
@@ -110,5 +130,6 @@ function initCategoryToggles() {
 }
 
 initModelButtons();
+initFormButtons();
 initCopyButton();
 initCategoryToggles();

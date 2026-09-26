@@ -7,6 +7,7 @@
   <meta name="referrer" content="no-referrer" />
   <title>PlantãoTXT</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="evolucao.css" />
 </head>
 <body>
   <div class="layout">
@@ -16,22 +17,15 @@
       <div class="section sidebar-category">
         <label class="category-header">
           <input type="checkbox" class="category-toggle" />
-          <span class="category-title">🏥 Clínica</span>
+          <span class="category-title">📋 Evolução</span>
         </label>
         <div class="category-content">
-          <button type="button" class="model-button" data-template="admissaoClinica">Admissão – Sala de Emergência</button>
-          <button type="button" class="model-button" data-template="evolucao">Evolução – Sala de Emergência</button>
-        </div>
-      </div>
-
-      <div class="section sidebar-category">
-        <label class="category-header">
-          <input type="checkbox" class="category-toggle" />
-          <span class="category-title">🚑 Trauma</span>
-        </label>
-        <div class="category-content">
-          <button type="button" class="model-button" data-template="admissaoTraumaFem">Admissão Trauma – Feminino</button>
-          <button type="button" class="model-button" data-template="admissaoTraumaMasc">Admissão Trauma – Masculino</button>
+          <button type="button" class="model-button" data-form="admissao">Admissão PS</button>
+          <button type="button" class="model-button" data-form="abcde">Sala de Emergência (XABCDE)</button>
+          <button type="button" class="model-button" data-form="soap">Evolução diária (SOAP)</button>
+          <button type="button" class="model-button" data-form="sistemas">Evolução por sistemas (crítico)</button>
+          <button type="button" class="model-button" data-form="breve">Atendimento PS / alta</button>
+          <button type="button" class="model-button" data-form="intercorrencia">Intercorrência</button>
         </div>
       </div>
 
@@ -102,6 +96,7 @@
         </div>
         <pre id="preview-body" contenteditable="true" spellcheck="false"></pre>
       </div>
+      <div id="preview-form" hidden></div>
     </main>
   </div>
 
