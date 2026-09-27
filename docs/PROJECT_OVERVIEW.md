@@ -90,14 +90,14 @@ User selects DripCalc (Ferramentas)
 
 ## Template Categories
 
-The application contains **37 items** grouped into 5 sections: 6 interactive forms, 30 static texts and 1 tool.
+The application contains **36 items** grouped into 5 sections: 6 interactive forms, 29 static texts and 1 tool.
 
 | Section | Kind | Items |
 |---------|------|-------|
 | Evolução | form (`data-form`) | Admissão PS, Sala de Emergência (XABCDE), Evolução diária (SOAP), Evolução por sistemas (crítico), Atendimento PS / alta, Intercorrência |
 | Procedimentos | text (`data-template`) | 20 descrições de procedimentos clínicos e de emergência |
 | Orientações / Prescrições (Alta) | text (`data-template`) | Dengue, Dor Traumática, Herpes Zóster, IVAS, Nefrolitíase, PNM sem comorbidade, PNM com comorbidade, PNM – alergia a β-lactâmicos/macrolídeos |
-| Prompts de IA | text (`data-template`) | Pedido de interconsulta, Resultados laboratoriais em linha |
+| Prompts de IA | text (`data-template`) | Resultados laboratoriais em linha |
 | Ferramentas | tool (`data-tool`) | DripCalc — infusão, bolus e fluidos |
 
 The **Evolução** section replaced the former **Clínica** (2 static texts) and **Trauma** (2 static texts) sections; `data/clinica.js` and `data/trauma.js` were removed. The XABCDE and Admissão PS forms cover the same documentation, now generated from filled fields instead of a fixed block of text.
@@ -114,7 +114,7 @@ The **Evolução** section replaced the former **Clínica** (2 static texts) and
 | Form models | [data/evolucao-modelos.js](../data/evolucao-modelos.js) | `TEMPLATES` (6 models), `N` (normal exam texts), `num()` / `fmtN()`, and the CKD-EPI 2021 helper behind the TFGe field |
 | Procedure templates | [data/procedimentos.js](../data/procedimentos.js) | 20 procedure description templates |
 | Discharge templates | [data/alta.js](../data/alta.js) | 8 discharge prescription templates |
-| AI prompt templates | [data/ia.js](../data/ia.js) | `promptInterconsulta`, `promptResultadosLaboratoriaisLinha` |
+| AI prompt templates | [data/ia.js](../data/ia.js) | `promptResultadosLaboratoriaisLinha` |
 | Styling | [style.css](../style.css) | Dark responsive theme, category toggles, cards, buttons, and preview panel |
 | DripCalc UI | [dripcalc-engine.js](../dripcalc-engine.js) | Builds the calculator in `#preview-tool`, exports `mountDripCalc()` / `unmountDripCalc()` |
 | DripCalc logic | [dripcalc/](../dripcalc/) | `calc.js` (pure formulas), `data.js` (presets and presentations), `constants.js` (unit ids, defaults) — copied unchanged from DripCalc |

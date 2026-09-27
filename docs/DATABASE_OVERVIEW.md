@@ -45,10 +45,9 @@ const textos = { [key: string]: string };
 | `altaPNMComorb` | [data/alta.js](../data/alta.js) | Alta | PNM Comunidade – leve (com comorbidades) |
 | `altaPNMSemComorb` | [data/alta.js](../data/alta.js) | Alta | PNM Comunidade – leve (sem comorbidade) |
 | `altaPNMAlergia` | [data/alta.js](../data/alta.js) | Alta | PNM – se alergia a β-lactâmicos / macrolídeos |
-| `promptInterconsulta` | [data/ia.js](../data/ia.js) | Prompts de IA | Pedido de interconsulta |
 | `promptResultadosLaboratoriaisLinha` | [data/ia.js](../data/ia.js) | Prompts de IA | Resultados laboratoriais em linha |
 
-**Total text keys:** 30. **Total `data-template` buttons in `index.html`:** 30.
+**Total text keys:** 29. **Total `data-template` buttons in `index.html`:** 29.
 
 ### Evolução Form Models
 
@@ -63,7 +62,7 @@ The six evolução models are **not** part of `textos`: they are structured obje
 | `breve` | Atendimento PS / alta |
 | `intercorrencia` | Intercorrência |
 
-**Total `data-form` buttons in `index.html`:** 6. **Total `data-tool` buttons:** 1 (`dripcalc`). **Total sidebar buttons:** 37.
+**Total `data-form` buttons in `index.html`:** 6. **Total `data-tool` buttons:** 1 (`dripcalc`). **Total sidebar buttons:** 36.
 
 ### DripCalc Catalogs
 

@@ -59,7 +59,7 @@ Each file in [data/](../data/) exports a named object. The text modules are merg
 |------|--------|------|
 | [data/procedimentos.js](../data/procedimentos.js) | `procedureTemplates` | 20 procedure description keys |
 | [data/alta.js](../data/alta.js) | `altaTemplates` | `altaDengue`, `altaDorTraumatica`, `altaHerpesZoster`, `altaIVAS`, `altaNefrolitiase`, `altaPNMComorb`, `altaPNMSemComorb`, `altaPNMAlergia` |
-| [data/ia.js](../data/ia.js) | `aiPromptTemplates` | `promptInterconsulta`, `promptResultadosLaboratoriaisLinha` |
+| [data/ia.js](../data/ia.js) | `aiPromptTemplates` | `promptResultadosLaboratoriaisLinha` |
 | [data/evolucao-modelos.js](../data/evolucao-modelos.js) | `TEMPLATES`, `N`, `num`, `fmtN` | models `admissao`, `abcde`, `soap`, `sistemas`, `breve`, `intercorrencia` |
 
 `num()` and `fmtN()` live in the models file, not the engine, because the `CALC` functions declared there close over them; the engine imports them back from it. `ckdEpi2021()` is private to the file and parses creatinine with its own `parseFloat` — `num()` treats a dot as a thousands separator, so `1.2` would become `12`.

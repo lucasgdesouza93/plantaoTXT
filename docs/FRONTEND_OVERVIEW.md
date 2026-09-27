@@ -6,7 +6,7 @@ There is a **single page** with no routing system.
 
 | Page | File | URL | Description |
 |------|------|-----|-------------|
-| Main (only) page | [index.html](../index.html) | `/` (root) | Sidebar with checkbox-controlled categories, 37 action buttons, and a preview area with three mutually exclusive modes |
+| Main (only) page | [index.html](../index.html) | `/` (root) | Sidebar with checkbox-controlled categories, 36 action buttons, and a preview area with three mutually exclusive modes |
 
 The preview area has three modes, never visible at the same time:
 

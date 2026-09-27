@@ -43,7 +43,7 @@ function copiar(tipo: string, btn?: HTMLElement): void
 |-------|--------|
 | Procedimentos | `orotrachealIntubation`, `cricothyroidotomy`, `chestTubeDrainage`, `thoracentesis`, `resuscitativeThoracotomy`, `synchronizedCardioversion`, `transvenousPacemaker`, `pericardiocentesis`, `centralVenousAccess`, `arterialPuncture`, `intraosseousAccess`, `lumbarPuncture`, `paracentesis`, `urinaryCatheterization`, `enteralTubeInsertion`, `immobilization`, `jointReduction`, `woundSuture`, `abscessDrainage`, `proceduralSedation` |
 | Alta | `altaDengue`, `altaDorTraumatica`, `altaHerpesZoster`, `altaIVAS`, `altaNefrolitiase`, `altaPNMComorb`, `altaPNMSemComorb`, `altaPNMAlergia` |
-| Prompts de IA | `promptInterconsulta`, `promptResultadosLaboratoriaisLinha` |
+| Prompts de IA | `promptResultadosLaboratoriaisLinha` |
 
 **Behavior:**
 1. Looks up `textos[tipo]`; returns silently if the key does not exist (no `alert`).
