@@ -181,16 +181,30 @@ function renderField(f) {
             b.setAttribute('aria-pressed', String(cr.includes(o)));
             set(f.id, cr);
             if (f.sex) { applySex(); renderForm(); refresh(); }
+            if (f.details) { renderDetails(); if (cr.includes(o)) detBox.querySelector(`[data-o="${o}"]`)?.focus(); }
           }
         }, g(o));
         box.append(b);
       });
+      // details: cada opção marcada ganha um campo próprio (ex.: sítio/data do dispositivo)
+      const detBox = el('div', { class: 'ev-row ev-details' });
+      const renderDetails = () => {
+        detBox.innerHTML = '';
+        (V()[f.id] || []).forEach(o => {
+          const k = `${f.id}__d__${o}`;
+          const inp = el('input', { type: 'text', 'data-o': o, placeholder: f.details, oninput: e => set(k, e.target.value) });
+          inp.value = V()[k] || '';
+          detBox.append(el('label', { class: 'ev-sub' }, el('small', {}, g(o)), inp));
+        });
+      };
+      if (f.details) renderDetails();
       if (f.other) {
         const oi = el('input', { type: 'text', placeholder: f.other, oninput: e => set(f.id + '__o', e.target.value) });
         oi.value = v[f.id + '__o'] || '';
         box.append(oi);
       }
       wrap.append(box);
+      if (f.details) wrap.append(detBox);
       break;
     }
     case 'row': {
@@ -252,12 +266,15 @@ function fieldOut(f, v, inner) {
     const all = parts.filter(Boolean);
     return all.length ? `${f.out || f.label}: ${all.join(' | ')}` : '';
   }
-  const L = f.out || f.label, lbl = s => f.nolabel ? s : `${L}: ${s}`;
+  const L = f.out || f.label, lbl = s => f.nolabel ? s : f.below ? `${L}:\n${s}` : `${L}: ${s}`;
   switch (f.t) {
     case 'text': { const x = (v[f.id] || '').trim(); return x ? lbl(withUnit(x, f.unit)) : ''; }
     case 'area': case 'select': case 'insert': { const x = (v[f.id] || '').trim(); return x ? lbl(x) : ''; }
     case 'chips': {
-      const items = (v[f.id] || []).map(g);
+      const items = (v[f.id] || []).map(o => {
+        const d = f.details && (v[`${f.id}__d__${o}`] || '').trim();
+        return g(o) + (d ? ` (${d})` : '');
+      });
       const o = (v[f.id + '__o'] || '').trim();
       if (o) { if (f.detail && items.length) items[items.length - 1] += ` (${o})`; else items.push(o); }
       if (!items.length) return '';

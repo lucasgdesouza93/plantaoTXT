@@ -8,6 +8,7 @@
   <title>PlantãoTXT</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="evolucao.css" />
+  <link rel="stylesheet" href="dripcalc.css" />
 </head>
 <body>
   <div class="layout">
@@ -85,6 +86,16 @@
           <button type="button" class="model-button" data-template="promptResultadosLaboratoriaisLinha">Resultados laboratoriais em linha</button>
         </div>
       </div>
+
+      <div class="section sidebar-category">
+        <label class="category-header">
+          <input type="checkbox" class="category-toggle" />
+          <span class="category-title">🧮 Ferramentas</span>
+        </label>
+        <div class="category-content">
+          <button type="button" class="model-button" data-tool="dripcalc">DripCalc — infusão, bolus e fluidos</button>
+        </div>
+      </div>
     </aside>
 
     <main class="preview">
@@ -97,6 +108,7 @@
         <pre id="preview-body" contenteditable="true" spellcheck="false"></pre>
       </div>
       <div id="preview-form" hidden></div>
+      <div id="preview-tool" hidden></div>
     </main>
   </div>
 

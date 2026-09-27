@@ -11,8 +11,9 @@
    ph (placeholder), {o|a} em qualquer texto concorda com o Sexo do paciente, part/gather
    (campos com part:'X' saem dentro do campo com gather:'X'), intitle (a escolha sai no
    título, não no corpo), noout (só alimenta cálculos; não sai no texto), detail (o "outro"
-   sai entre parênteses após a opção), sep (separador dos itens escolhidos; padrão ", "),
-   rows, id (necessário só quando um CALC lê o campo).
+   sai entre parênteses após a opção), details (placeholder; cada opção marcada ganha campo próprio,
+   que sai entre parênteses logo após ela), sep (separador dos itens escolhidos; padrão ", "),
+   below (o valor começa na linha abaixo do rótulo), rows, id (necessário só quando um CALC lê o campo).
    Seção: inline:true junta os campos numa linha só; normalAll:true põe o botão "Tudo normal".
    ===================================================================== */
 
@@ -24,6 +25,19 @@ export function num(s) {
   return isNaN(n) ? null : n;
 }
 export const fmtN = n => String(Math.round(n * 10) / 10).replace('.', ',');
+
+/* TFGe pela CKD-EPI 2021 (creatinina, sem raça). Só adultos (≥ 18 anos).
+   Cr é lida à parte porque num() trata ponto como milhar e "1.2" viraria 12. */
+function ckdEpi2021(crTxt, idadeTxt, sexo) {
+  const cr = parseFloat(String(crTxt || '').replace(',', '.'));
+  const idade = num(idadeTxt);
+  const fem = (sexo || [])[0] === 'Feminino', masc = (sexo || [])[0] === 'Masculino';
+  if (!(cr > 0) || idade == null || idade < 18 || (!fem && !masc)) return '';
+  const k = fem ? 0.7 : 0.9, a = fem ? -0.241 : -0.302;
+  const tfg = 142 * Math.min(cr / k, 1) ** a * Math.max(cr / k, 1) ** -1.2
+    * 0.9938 ** idade * (fem ? 1.012 : 1);
+  return `${Math.round(tfg)} mL/min/1,73 m² (CKD-EPI 2021)`;
+}
 
 const T=(label,o={})=>({t:'text',label,...o});
 const A=(label,o={})=>({t:'area',label,...o});
@@ -62,11 +76,11 @@ const EXAM=()=>[
   A('POCUS',{ph:'Pulmão, VCI, coração, FAST...'}),
   A('Outros achados',{out:'Outros'})
 ];
-const IDADE=()=>T('Idade',{unit:' anos',ph:'67'});
+const IDADE=(o={})=>T('Idade',{unit:' anos',ph:'67',...o});
 const SEXO=(o={})=>C('Sexo',['Masculino','Feminino'],{sex:true,...o});
 const ALERGIAS=()=>C('Alergias',['Nega alergias'],{other:'Descrever alergia'});
 const COMORB=['HAS','DM2','DM1','Dislipidemia','DRC','ICC','DAC / IAM prévio','FA','AVC prévio','DPOC','Asma','Hepatopatia crônica','Neoplasia','HIV','Hipotireoidismo','Demência','Nega comorbidades'];
-const DISPOSITIVOS=['AVP','CVC','PAI','SVD','SNE / SNG','TOT / VM','TQT','Dreno de tórax','Cateter de hemodiálise'];
+const DISPOSITIVOS=['AVP','CVC','PAI','SVD','SNE','SNG','TOT / VM','TQT','Dreno de tórax','Cateter de hemodiálise'];
 const DESTINO=['Observação no PS','Sala de emergência'];
 const CHEGADA=()=>C('Chegada',['Demanda espontânea','APH móvel'],{other:'Nome do serviço',detail:true});
 const ORIGEM=()=>C('Origem',['Domicílio','Via pública','Casa de repouso','APH fixo','Hospital'],{other:'Nome do hospital / serviço',detail:true});
@@ -177,8 +191,8 @@ export const TEMPLATES=[
   sections:[
     {title:'Identificação', fields:[
       PERIODO(), SEXO({noout:true}), T('Leito'), T('Dia de internação',{out:'DIH',ph:'D3'}),
-      A('Diagnósticos / problemas ativos',{out:'Diagnósticos',rows:2}),
-      M('Dispositivos',DISPOSITIVOS,{other:'Outro / sítio e data'}),
+      A('Diagnósticos / problemas ativos',{rows:2,below:true}),
+      M('Dispositivos',DISPOSITIVOS,{below:true,details:'Sítio / data (ex.: VJID, 22/09)',other:'Outro dispositivo (sítio e data)'}),
       T('Antimicrobianos',{full:true,ph:'Ceftriaxona D3/7 (início 23/09)'}),
       T('Culturas',{full:true,ph:'HMC 23/09: parcial negativa'})
     ]},
@@ -210,9 +224,9 @@ export const TEMPLATES=[
   desc:'Paciente grave na sala de emergência / UTI, organizado por sistemas.',
   sections:[
     {title:'Identificação', fields:[
-      PERIODO(), SEXO({noout:true}), T('Leito'), T('Dia de internação',{out:'DIH',ph:'D3'}), T('Dia de VM',{out:'VM',ph:'D2'}),
-      A('Diagnósticos / problemas ativos',{out:'Diagnósticos',rows:2}),
-      M('Dispositivos',DISPOSITIVOS,{other:'Outro / sítio e data'})
+      PERIODO(), SEXO({noout:true,id:'sexo'}), IDADE({id:'idade'}), T('Leito'), T('Dia de internação',{out:'DIH',ph:'D3'}), T('Dia de VM',{out:'VM',ph:'D2'}),
+      A('Diagnósticos / problemas ativos',{rows:2,below:true}),
+      M('Dispositivos',DISPOSITIVOS,{below:true,details:'Sítio / data (ex.: VJID, 22/09)',other:'Outro dispositivo (sítio e data)'})
     ]},
     {title:'Neurológico', fields:[
       T('Sedoanalgesia',{full:true,ph:'Fentanil 100 mcg/h + Midazolam 10 mg/h'}),
@@ -239,7 +253,8 @@ export const TEMPLATES=[
       A('Exame respiratório',{out:'AR',normal:N.ar})
     ]},
     {title:'Renal / metabólico', fields:[
-      R('Balanço',[['Diurese',' mL/24h'],['BH',' mL'],['Ur',''],['Cr','']],{nolabel:true}),
+      R('Balanço',[['Diurese',' mL/24h'],['BH',' mL'],['Ur',''],['Cr',' mg/dL','1,0','cr']],{nolabel:true}),
+      CALC('TFGe (CKD-EPI 2021)',v=>ckdEpi2021(v.cr,v.idade,v.sexo),{out:'TFGe'}),
       R('Eletrólitos',[['Na',''],['K',''],['Mg',''],['P',''],['Cai','']]),
       C('TRS',['Sem TRS','Hemodiálise intermitente','Hemodiálise contínua'],{other:'Outro'})
     ]},

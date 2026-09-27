@@ -2,6 +2,7 @@ import { altaTemplates } from './data/alta.js';
 import { aiPromptTemplates } from './data/ia.js';
 import { procedureTemplates } from './data/procedimentos.js';
 import { mountEvolucao, unmountEvolucao } from './evolucao-engine.js';
+import { mountDripCalc, unmountDripCalc } from './dripcalc-engine.js';
 
 // Clickjacking guard: refuse to run inside a frame
 if (window.top !== window.self) {
@@ -17,10 +18,8 @@ const textos = {
 
 let toastTimer;
 
-function copiar(tipo, btn) {
-  const texto = textos[tipo];
-  if (!texto) return;
-
+// Marca o botão escolhido e esconde os três modos do painel (texto, formulário, ferramenta).
+function limparPreview(btn) {
   document.querySelectorAll('.model-button').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
 
@@ -28,7 +27,19 @@ function copiar(tipo, btn) {
   unmountEvolucao(form);
   form.hidden = true;
 
+  const tool = document.getElementById('preview-tool');
+  unmountDripCalc(tool);
+  tool.hidden = true;
+
   document.getElementById('preview-empty').hidden = true;
+  document.getElementById('preview-content').hidden = true;
+}
+
+function copiar(tipo, btn) {
+  const texto = textos[tipo];
+  if (!texto) return;
+
+  limparPreview(btn);
   document.getElementById('preview-content').hidden = false;
   document.getElementById('preview-title').textContent = btn ? btn.textContent : tipo;
   document.getElementById('preview-body').textContent = texto;
@@ -36,15 +47,21 @@ function copiar(tipo, btn) {
 
 // Modo formulário: o painel de texto sai de cena e o motor monta o formulário do modelo.
 function abrirFormulario(modelo, btn) {
-  document.querySelectorAll('.model-button').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-
-  document.getElementById('preview-empty').hidden = true;
-  document.getElementById('preview-content').hidden = true;
+  limparPreview(btn);
 
   const form = document.getElementById('preview-form');
   form.hidden = false;
   mountEvolucao(form, modelo, toast);
+}
+
+// Modo ferramenta: calculadoras que não geram texto de prontuário (hoje só o DripCalc).
+function abrirFerramenta(nome, btn) {
+  if (nome !== 'dripcalc') return;
+  limparPreview(btn);
+
+  const tool = document.getElementById('preview-tool');
+  tool.hidden = false;
+  mountDripCalc(tool, toast);
 }
 
 async function copiarPreview() {
@@ -111,6 +128,12 @@ function initFormButtons() {
   });
 }
 
+function initToolButtons() {
+  document.querySelectorAll('.model-button[data-tool]').forEach(btn => {
+    btn.addEventListener('click', () => abrirFerramenta(btn.dataset.tool, btn));
+  });
+}
+
 function initCopyButton() {
   const btn = document.getElementById('btn-copy');
   if (btn) btn.addEventListener('click', copiarPreview);
@@ -131,5 +154,6 @@ function initCategoryToggles() {
 
 initModelButtons();
 initFormButtons();
+initToolButtons();
 initCopyButton();
 initCategoryToggles();

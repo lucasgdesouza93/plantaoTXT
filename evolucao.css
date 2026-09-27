@@ -388,3 +388,9 @@
     display: none;
   }
 }
+
+/* --- campo próprio por opção marcada (details) --- */
+
+.ev-details:not(:empty) {
+  margin-top: 6px;
+}
