@@ -30,7 +30,7 @@ Two-column desktop layout: fixed sidebar on the left, scrollable preview panel o
     <div class="section sidebar-category">
       <label class="category-header">
         <input type="checkbox" class="category-toggle">
-        <span class="category-title">Evolução</span>
+        <span class="category-title">Evoluções</span>  <!-- também Admissões, Procedimentos... -->
       </label>
       <div class="category-content">
         <button class="model-button" data-form="...">      <!-- abre um formulário -->

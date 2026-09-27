@@ -77,6 +77,7 @@ const EXAM=()=>[
   A('Outros achados',{out:'Outros'})
 ];
 const IDADE=(o={})=>T('Idade',{unit:' anos',ph:'67',...o});
+const PESO=(o={})=>T('Peso',{unit:' kg',ph:'70',...o});
 const SEXO=(o={})=>C('Sexo',['Masculino','Feminino'],{sex:true,...o});
 const ALERGIAS=()=>C('Alergias',['Nega alergias'],{other:'Descrever alergia'});
 const COMORB=['HAS','DM2','DM1','Dislipidemia','DRC','ICC','DAC / IAM prévio','FA','AVC prévio','DPOC','Asma','Hepatopatia crônica','Neoplasia','HIV','Hipotireoidismo','Demência','Nega comorbidades'];
@@ -85,17 +86,17 @@ const DESTINO=['Observação no PS','Sala de emergência'];
 const CHEGADA=()=>C('Chegada',['Demanda espontânea','APH móvel'],{other:'Nome do serviço',detail:true});
 const ORIGEM=()=>C('Origem',['Domicílio','Via pública','Casa de repouso','APH fixo','Hospital'],{other:'Nome do hospital / serviço',detail:true});
 const PERIODO=()=>C('Período',['Diurna','Noturna'],{intitle:true});
-const INFORMANTE=()=>C('Informante',['Paciente','Acompanhante','Paciente e acompanhante','Equipe de APH','Encaminhamento/prontuário'],{other:'Outro'});
+const INFORMANTE=()=>M('Informantes',['Paciente','Acompanhante','Equipe de APH','Encaminhamento/prontuário'],{other:'Outro'});
 const PLANO=['Alta após observação','Enfermaria','UTI'];
 const PUPILAS=['Isocóricas e fotorreagentes','Anisocoria','Mióticas','Midriáticas fixas','Não avaliáveis'];
 
 export const TEMPLATES=[
 {
-  id:'admissao', name:'Admissão PS', title:'ADMISSÃO — PRONTO-SOCORRO',
-  desc:'Admissão completa de paciente estável no pronto-socorro.',
+  id:'admissao', name:'Paciente Clínico', title:'ADMISSÃO — SALA DE EMERGÊNCIA',
+  desc:'Admissão de paciente clínico (não traumático): anamnese, antecedentes, exame físico, exames, hipóteses e conduta.',
   sections:[
     {title:'Identificação', inline:true, fields:[
-      IDADE(), SEXO(),
+      IDADE(), SEXO(), PESO(),
       CHEGADA(), ORIGEM(),
       INFORMANTE()
     ]},
@@ -127,19 +128,21 @@ export const TEMPLATES=[
   ]
 },
 {
-  id:'abcde', name:'Sala de emergência (XABCDE)', title:'ADMISSÃO — SALA DE EMERGÊNCIA',
-  desc:'Paciente crítico: avaliação primária estruturada, AMPLA e condutas de ressuscitação.',
+  id:'abcde', name:'Politrauma (XABCDE)', title:'ADMISSÃO — SALA DE EMERGÊNCIA',
+  desc:'Admissão de paciente politraumatizado: avaliação primária (XABCDE), AMPLA, avaliação secundária e condutas de ressuscitação.',
   sections:[
     {title:'Identificação', inline:true, fields:[
-      IDADE(), SEXO(),
+      IDADE(), SEXO(), PESO(),
       CHEGADA(), ORIGEM(), INFORMANTE(),
       T('Horário de chegada',{ph:'14:20'})
     ]},
-    {title:'Motivo / contexto', fields:[
-      A('Motivo',{nolabel:true,rows:3,ph:'Encontrad{o|a} rebaixad{o|a} em domicílio, trazid{o|a} por APH móvel...'}),
-      T('Alergias',{out:'A'}), T('Medicamentos',{out:'M'}), T('Passado médico',{out:'P'}),
-      T('Líquidos / última refeição',{out:'L'}), T('Ambiente / eventos',{out:'A',full:true}),
-      A('HDA',{rows:4})
+    {title:'Mecanismo do trauma / contexto', fields:[
+      C('Mecanismo',['Colisão auto x auto','Colisão moto x auto','Queda de moto','Atropelamento','Queda de altura','Queda da própria altura','Agressão física','FAF','FAB'],{other:'Outro'}),
+      A('Descrição do trauma',{nolabel:true,rows:3,ph:'Condutor{|a} de motocicleta, com capacete, colisão frontal com automóvel a ~60 km/h. Trazid{o|a} por APH móvel em prancha rígida com colar cervical...'}),
+      T('Alergias',{out:'A',ph:'Nega'}), T('Medicamentos',{out:'M',ph:'Nega uso de anticoagulantes'}), T('Passado médico / gestação',{out:'P',ph:'HAS, DM2'}),
+      T('Líquidos / última refeição',{out:'L',ph:'Almoço às 12:00'}),
+      T('Ambiente / eventos',{out:'A',full:true,ph:'Ejeção do veículo, encarceramento por 20 min, óbito no local, perda de consciência...'}),
+      A('Atendimento pré-hospitalar',{out:'APH',rows:3,ph:'Glasgow 13 na cena, SpO2 90% AA, 1 L de cristaloide, imobilização com colar e prancha...'})
     ]},
     {title:'Avaliação primária', normalAll:true, fields:[
       A('X — Hemorragia exsanguinante',{out:'X',normal:'Sem hemorragia externa exsanguinante.'}),
@@ -148,7 +151,7 @@ export const TEMPLATES=[
       M('A — intervenções',['Aspiração','Cânula orofaríngea','IOT','Dispositivo supraglótico','Colar cervical'],{out:'Intervenções (A)',other:'Outra'}),
       A('B — Ventilação',{out:'B',normal:'Eupneic{o|a}, expansibilidade simétrica, MV presente bilateralmente sem ruídos adventícios. Traqueia centrada.'}),
       M('B — intervenções',['Cateter nasal','Máscara não reinalante','CNAF','VNI','VM invasiva','Toracocentese / drenagem'],{out:'Intervenções (B)',other:'Outra'}),
-      A('C — Circulação',{out:'C',normal:'Pele corada e aquecida, TEC < 3 s, pulsos periféricos cheios e simétricos, sem sangramento externo ativo.'}),
+      A('C — Circulação',{out:'C',normal:'Pele corada e aquecida, TEC < 3 s, pulsos periféricos cheios e simétricos.'}),
       M('C — intervenções',['AVP','Acesso intraósseo','CVC','Cristaloide','Hemoderivados','Vasopressor','Cardioversão / desfibrilação','Ácido tranexâmico'],{out:'Intervenções (C)',other:'Outra'}),
       GCS({label:'D — Glasgow',part:'D'}),
       S('D — Pupilas',PUPILAS,{out:'Pupilas',part:'D'}),
@@ -190,7 +193,7 @@ export const TEMPLATES=[
   desc:'Evolução de paciente em observação ou internado no PS.',
   sections:[
     {title:'Identificação', fields:[
-      PERIODO(), SEXO({noout:true}), T('Leito'), T('Dia de internação',{out:'DIH',ph:'D3'}),
+      PERIODO(), SEXO({noout:true}), T('Leito'), T('Dia de internação',{out:'DIH',ph:'D3'}), PESO(),
       A('Diagnósticos / problemas ativos',{rows:2,below:true}),
       M('Dispositivos',DISPOSITIVOS,{below:true,details:'Sítio / data (ex.: VJID, 22/09)',other:'Outro dispositivo (sítio e data)'}),
       T('Antimicrobianos',{full:true,ph:'Ceftriaxona D3/7 (início 23/09)'}),
@@ -224,7 +227,7 @@ export const TEMPLATES=[
   desc:'Paciente grave na sala de emergência / UTI, organizado por sistemas.',
   sections:[
     {title:'Identificação', fields:[
-      PERIODO(), SEXO({noout:true,id:'sexo'}), IDADE({id:'idade'}), T('Leito'), T('Dia de internação',{out:'DIH',ph:'D3'}), T('Dia de VM',{out:'VM',ph:'D2'}),
+      PERIODO(), SEXO({noout:true,id:'sexo'}), IDADE({id:'idade'}), PESO(), T('Leito'), T('Dia de internação',{out:'DIH',ph:'D3'}), T('Dia de VM',{out:'VM',ph:'D2'}),
       A('Diagnósticos / problemas ativos',{rows:2,below:true}),
       M('Dispositivos',DISPOSITIVOS,{below:true,details:'Sítio / data (ex.: VJID, 22/09)',other:'Outro dispositivo (sítio e data)'})
     ]},
@@ -299,7 +302,7 @@ export const TEMPLATES=[
   id:'breve', name:'Atendimento PS / alta', title:'ATENDIMENTO — PRONTO-SOCORRO',
   desc:'Atendimento de menor complexidade com desfecho no próprio plantão (fast track, alta).',
   sections:[
-    {title:'Identificação', inline:true, fields:[IDADE(), SEXO()]},
+    {title:'Identificação', inline:true, fields:[IDADE(), SEXO(), PESO()]},
     {title:'Queixa principal', fields:[T('Queixa principal',{nolabel:true,full:true})]},
     {title:'História da doença atual', fields:[A('HDA',{nolabel:true,rows:4})]},
     {title:'Antecedentes', fields:[
@@ -325,7 +328,7 @@ export const TEMPLATES=[
   desc:'Registro de intercorrência em paciente já internado ou em observação.',
   sections:[
     {title:'Identificação', inline:true, fields:[
-      SEXO({noout:true}), T('Leito'), T('Horário',{ph:'03:15'}),
+      SEXO({noout:true}), T('Leito'), PESO(), T('Horário',{ph:'03:15'}),
       C('Acionado por',['Enfermagem','Familiar','Alarme do monitor','Reavaliação de rotina'],{other:'Outro'})
     ]},
     {title:'Motivo', fields:[A('Motivo',{nolabel:true,rows:3,ph:'Chamado pela enfermagem por dessaturação...'})]},

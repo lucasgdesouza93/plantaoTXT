@@ -90,17 +90,18 @@ User selects DripCalc (Ferramentas)
 
 ## Template Categories
 
-The application contains **36 items** grouped into 5 sections: 6 interactive forms, 29 static texts and 1 tool.
+The application contains **36 items** grouped into 6 sections: 6 interactive forms, 29 static texts and 1 tool.
 
 | Section | Kind | Items |
 |---------|------|-------|
-| Evolução | form (`data-form`) | Admissão PS, Sala de Emergência (XABCDE), Evolução diária (SOAP), Evolução por sistemas (crítico), Atendimento PS / alta, Intercorrência |
+| Evoluções | form (`data-form`) | Evolução diária (SOAP), Evolução por sistemas (crítico), Intercorrência |
+| Admissões | form (`data-form`) | Paciente Clínico, Politrauma (XABCDE), Atendimento PS / alta |
 | Procedimentos | text (`data-template`) | 20 descrições de procedimentos clínicos e de emergência |
 | Orientações / Prescrições (Alta) | text (`data-template`) | Dengue, Dor Traumática, Herpes Zóster, IVAS, Nefrolitíase, PNM sem comorbidade, PNM com comorbidade, PNM – alergia a β-lactâmicos/macrolídeos |
 | Prompts de IA | text (`data-template`) | Resultados laboratoriais em linha |
 | Ferramentas | tool (`data-tool`) | DripCalc — infusão, bolus e fluidos |
 
-The **Evolução** section replaced the former **Clínica** (2 static texts) and **Trauma** (2 static texts) sections; `data/clinica.js` and `data/trauma.js` were removed. The XABCDE and Admissão PS forms cover the same documentation, now generated from filled fields instead of a fixed block of text.
+The six forms were first grouped in a single **Evolução** section, which replaced the former **Clínica** (2 static texts) and **Trauma** (2 static texts) sections; `data/clinica.js` and `data/trauma.js` were removed. The Politrauma (XABCDE) and Paciente Clínico forms cover the same documentation, now generated from filled fields instead of a fixed block of text. That section was later split into **Evoluções** and **Admissões** in [index.html](../index.html) only — every form is still an evolução model in `data/evolucao-modelos.js`, rendered by the same engine.
 
 ---
 

@@ -8,10 +8,11 @@ Roda inteiro no cliente. Sem servidor, sem banco, sem build, sem dependências.
 
 | Seção | O quê |
 |-------|-------|
-| 📋 Evolução | 6 formulários interativos: Admissão PS, Sala de Emergência (XABCDE), Evolução diária (SOAP), Evolução por sistemas (crítico), Atendimento PS / alta, Intercorrência |
+| 📋 Evoluções | 3 formulários interativos: Evolução diária (SOAP), Evolução por sistemas (crítico), Intercorrência |
+| 🏥 Admissões | 3 formulários interativos: Paciente Clínico, Politrauma (XABCDE), Atendimento PS / alta |
 | 🩺 Procedimentos | 20 descrições de procedimentos |
 | 🧾 Orientações / Prescrições (Alta) | 8 modelos de alta |
-| 🤖 Prompts de IA | 2 prompts reutilizáveis |
+| 🤖 Prompts de IA | 1 prompt reutilizável (resultados laboratoriais em linha) |
 | 🧮 Ferramentas | DripCalc — infusão, bolus e fluidos |
 
 Os formulários de evolução só colocam no texto o que foi preenchido, concordam em gênero com o campo Sexo, e calculam sozinhos driving pressure, relação P/F e TFGe (CKD-EPI 2021).

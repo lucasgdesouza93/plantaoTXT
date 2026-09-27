@@ -55,8 +55,8 @@ The six evolução models are **not** part of `textos`: they are structured obje
 
 | Model id | Button Label |
 |----------|--------------|
-| `admissao` | Admissão PS |
-| `abcde` | Sala de Emergência (XABCDE) |
+| `admissao` | Paciente Clínico |
+| `abcde` | Politrauma (XABCDE) |
 | `soap` | Evolução diária (SOAP) |
 | `sistemas` | Evolução por sistemas (crítico) |
 | `breve` | Atendimento PS / alta |

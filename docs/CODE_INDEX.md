@@ -49,7 +49,7 @@ Not shown: `.vscode/` and `.claude/` hold editor and agent settings and have no 
 
 | File | Description |
 |------|-------------|
-| [index.html](../index.html) | Page shell with five `.sidebar-category` groups, checkbox-based category headers, `.model-button` entries (`data-template` for texts, `data-form` for forms, `data-tool` for tools), the preview panel, and the `#preview-form` / `#preview-tool` containers |
+| [index.html](../index.html) | Page shell with six `.sidebar-category` groups, checkbox-based category headers, `.model-button` entries (`data-template` for texts, `data-form` for forms, `data-tool` for tools), the preview panel, and the `#preview-form` / `#preview-tool` containers |
 
 ### JavaScript — Data Layer
 
@@ -90,6 +90,8 @@ Each entry of `TEMPLATES` is `{ id, name, title, desc, sections[] }`, and each s
 Three `CALC` fields exist today, all in the `sistemas` model: **Driving pressure** (`pplat` − `peep`), **Relação P/F** (`pf_pao2` / `pf_fio2`, accepting FiO2 as either `40` or `0,4`), and **TFGe (CKD-EPI 2021)** (`cr`, `idade`, `sexo`; returns empty under 18 years or without a Sexo, since the formula has no value for either).
 
 Common field options: `out` (label in the output), `nolabel`, `below` (value starts on the line below the label), `full`, `ph`, `rows`, `noout` (feeds calculations only), `intitle` (goes into the title), `part` / `gather` (merge several fields into one output line), `sex` (drives `{o|a}` gender agreement), `id` (required for any field a `CALC` reads).
+
+Fields repeated across models are defined once as small builders just above `TEMPLATES` — `IDADE`, `PESO`, `SEXO`, `ALERGIAS`, `CHEGADA`, `ORIGEM`, `PERIODO`, `INFORMANTE`, `EXAM` — plus shared option lists (`COMORB`, `DISPOSITIVOS`, `DESTINO`, `PLANO`, `PUPILAS`). Editing one of them changes every model that uses it. Builders that take options (`IDADE(o)`, `PESO(o)`, `SEXO(o)`) merge them over their defaults, e.g. `SEXO({noout:true,id:'sexo'})`. `PESO` is in the Identificação section of all six models.
 
 Two options add free text to a chip field and are easy to confuse:
 
