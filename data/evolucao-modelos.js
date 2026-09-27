@@ -117,8 +117,8 @@ export const TEMPLATES=[
     ]},
     {title:'Hipóteses diagnósticas', fields:[A('Hipóteses',{nolabel:true,rows:3,ph:'1. \n2. '})]},
     {title:'Conduta', fields:[
-      I('Condutas',['Monitorização contínua','Acesso venoso periférico','O2 suplementar','Exames laboratoriais','Hemoculturas (2 pares)','ECG','Radiografia de tórax','Tomografia','Analgesia','Antiemético','Hidratação venosa','Antibioticoterapia','Profilaxia de TEV','Jejum','Dieta liberada','Reavaliação após medidas iniciais'],{nolabel:true,rows:6,ph:'Doses, horários, pendências...'}),
-      M('Comunicação',['Paciente informad{o|a} sobre quadro e conduta','Familiar informado','Discutido com especialista'],{other:'Especialidade / nome'})
+      I('Condutas',['Monitorização contínua','Acesso venoso periférico','O2 suplementar','Exames laboratoriais','Gasometria arterial','Troponina seriada','Hemoculturas (2 pares)','Urina I e urocultura','ECG','Radiografia de tórax','Tomografia','Ultrassonografia','Protocolo de sepse aberto','Protocolo de dor torácica acionado','Protocolo de AVC acionado','Antibioticoterapia','Analgesia','Antiemético','Hidratação venosa','Controle glicêmico','Profilaxia de TEV','Jejum','Dieta liberada','Reavaliação após medidas iniciais'],{nolabel:true,rows:6,ph:'Doses, horários, pendências...'}),
+      M('Comunicação',['Paciente informad{o|a} sobre quadro e conduta','Familiar informado','Discutido com especialista','Vaga solicitada à regulação'],{other:'Especialidade / nome'})
     ]},
     {title:'Plano e destino', fields:[
       C('Destino',DESTINO,{other:'Outro'}),
@@ -178,8 +178,8 @@ export const TEMPLATES=[
     ]},
     {title:'Hipóteses diagnósticas', fields:[A('Hipóteses',{nolabel:true,rows:3,ph:'1. \n2. '})]},
     {title:'Conduta', fields:[
-      I('Condutas',['Monitorização multiparamétrica','Hemoculturas (2 pares)','Antibioticoterapia na 1ª hora','Sedoanalgesia pós-IOT','SVD com controle de diurese','Protocolo de sepse aberto','Protocolo de AVC acionado','Protocolo de dor torácica acionado','TC de crânio','Profilaxia de TEV'],{nolabel:true,rows:6,ph:'Drogas e doses, parâmetros de VM, metas...'}),
-      M('Comunicação',['Familiar informado sobre gravidade','Discutido com especialista','Vaga solicitada à regulação'],{other:'Detalhar'})
+      I('Condutas',['Monitorização multiparamétrica','Restrição de movimento da coluna','Protocolo de transfusão maciça acionado','Hipotensão permissiva','Prevenção de hipotermia (manta térmica, fluidos aquecidos)','Tipagem sanguínea e prova cruzada','Exames laboratoriais (Hb, coagulograma, gasometria, lactato)','β-HCG','Radiografia de tórax e pelve','TC de crânio','TC de corpo inteiro (pan-TC)','Analgesia','Sedoanalgesia pós-IOT','Profilaxia antitetânica','Antibioticoterapia (fratura exposta)','Imobilização de fraturas','Sutura / curativo de ferimentos','SVD com controle de diurese','Jejum'],{nolabel:true,rows:6,ph:'Drogas e doses, hemoderivados (CH, PFC, plaquetas), parâmetros de VM, metas...'}),
+      M('Comunicação',['Familiar informado sobre gravidade','Discutido com cirurgia geral / trauma','Discutido com neurocirurgia','Discutido com ortopedia','Centro cirúrgico acionado','Vaga solicitada à regulação'],{other:'Detalhar'})
     ]},
     {title:'Plano e destino', fields:[
       C('Destino',DESTINO,{other:'Outro'}),
