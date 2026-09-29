@@ -74,22 +74,22 @@ Each file in [data/](../data/) exports a named object. The text modules are merg
 
 #### Form model format
 
-Each entry of `TEMPLATES` is `{ id, name, title, desc, sections[] }`, and each section is `{ title, inline?, normalAll?, fields[] }`. Fields are built by the short constructors at the top of the file:
+Each entry of `TEMPLATES` is `{ id, name, title, desc, sections[] }`, and each section is `{ title, inline?, normalAll?, tight?, fields[] }` (`tight` removes the blank line between all of its fields). Fields are built by the short constructors at the top of the file:
 
 | Constructor | Field | Notes |
 |-------------|-------|-------|
 | `T` | short text | `unit` appends a unit to numeric values |
 | `A` | long text | `normal` adds a "Normal" button with the standard finding |
 | `C` / `M` | single / multiple choice chips | `other`, `detail`, `details` (per-option text input, output as `Option (text)`), `list`, `sep` |
-| `S` | dropdown | |
+| `S` | dropdown | `normal` (an option) is set by "Tudo normal" |
 | `I` | insert buttons that add `- item` lines to a free-text area | |
 | `R` | row of subfields | `[label, unit, placeholder, id]` |
-| `GCS` | Glasgow coma scale | selects + computed badge |
+| `GCS` | Glasgow coma scale | selects + computed badge; `normal: true` lets "Tudo normal" set 15 (O4 V5 M6) |
 | `CALC` | computed field | `fn(values)` — needs `id` on the fields it reads |
 
 Three `CALC` fields exist today, all in the `sistemas` model: **Driving pressure** (`pplat` − `peep`), **Relação P/F** (`pf_pao2` / `pf_fio2`, accepting FiO2 as either `40` or `0,4`), and **TFGe (CKD-EPI 2021)** (`cr`, `idade`, `sexo`; returns empty under 18 years or without a Sexo, since the formula has no value for either).
 
-Common field options: `out` (label in the output), `nolabel`, `below` (value starts on the line below the label), `full`, `ph`, `rows`, `noout` (feeds calculations only), `intitle` (goes into the title), `part` / `gather` (merge several fields into one output line), `sex` (drives `{o|a}` gender agreement), `id` (required for any field a `CALC` reads).
+Common field options: `out` (label in the output), `nolabel`, `below` (value starts on the line below the label), `tight` (no blank line before it — stays right below the previous field), `full`, `ph`, `rows`, `noout` (feeds calculations only), `intitle` (goes into the title), `part` / `gather` (merge several fields into one output line), `sex` (drives `{o|a}` gender agreement), `id` (required for any field a `CALC` reads).
 
 Fields repeated across models are defined once as small builders just above `TEMPLATES` — `IDADE`, `PESO`, `SEXO`, `ALERGIAS`, `CHEGADA`, `ORIGEM`, `PERIODO`, `INFORMANTE`, `EXAM` — plus shared option lists (`COMORB`, `DISPOSITIVOS`, `DESTINO`, `PLANO`, `PUPILAS`). Editing one of them changes every model that uses it. Builders that take options (`IDADE(o)`, `PESO(o)`, `SEXO(o)`) merge them over their defaults, e.g. `SEXO({noout:true,id:'sexo'})`. `PESO` is in the Identificação section of all six models.
 
@@ -133,7 +133,7 @@ Two options add free text to a chip field and are easy to confuse:
 | Function | Description |
 |----------|-------------|
 | `renderForm()` / `renderField(f)` | Build the sections and one field each, by field type |
-| `build()` | Assembles the prontuário text: title, date/time, then one block per non-empty section |
+| `build()` | Assembles the prontuário text: title, date/time, then one block per non-empty section, with a blank line between fields (inline sections stay on one line, joined by pipes) |
 | `fieldOut(f, v, inner)` | One output line for one field, honouring `out` / `nolabel` / `list` / `gather` / `noout` |
 | `refresh()` | Recomputes CALC fields, Glasgow badges, and the output panel |
 | `g(text)` / `applySex()` | Gender agreement: `g()` resolves `{o|a}` on render, `applySex()` rewrites already-typed text when Sexo changes |

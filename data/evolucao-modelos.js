@@ -13,8 +13,8 @@
    título, não no corpo), noout (só alimenta cálculos; não sai no texto), detail (o "outro"
    sai entre parênteses após a opção), details (placeholder; cada opção marcada ganha campo próprio,
    que sai entre parênteses logo após ela), sep (separador dos itens escolhidos; padrão ", "),
-   below (o valor começa na linha abaixo do rótulo), rows, id (necessário só quando um CALC lê o campo).
-   Seção: inline:true junta os campos numa linha só; normalAll:true põe o botão "Tudo normal".
+   below (o valor começa na linha abaixo do rótulo), tight (sai colado ao campo anterior, sem linha em branco), rows, id (necessário só quando um CALC lê o campo).
+   Seção: inline:true junta os campos numa linha só; tight:true tira a linha em branco entre todos os campos; normalAll:true põe o botão "Tudo normal".
    ===================================================================== */
 
 /* Helpers numéricos: ficam aqui porque as funções dos campos CALC deste arquivo
@@ -102,14 +102,14 @@ export const TEMPLATES=[
     ]},
     {title:'Queixa principal', fields:[T('Queixa principal',{nolabel:true,full:true,ph:'Dor torácica há 2 horas'})]},
     {title:'História da doença atual', fields:[A('HDA',{nolabel:true,rows:6})]},
-    {title:'Antecedentes', fields:[
+    {title:'Antecedentes', tight:true, fields:[
       M('Comorbidades',COMORB,{other:'Outras',sep:' | '}),
       M('Hábitos',['Tabagismo ativo','Ex-tabagista','Etilismo','Drogas ilícitas','Nega'],{other:'Detalhar (carga tabágica etc.)',sep:' | '}),
       T('Cirurgias / internações prévias',{out:'Cirurgias/internações',full:true}),
       A('Medicações de uso contínuo',{out:'MUC',rows:2}),
       ALERGIAS()
     ]},
-    {title:'Exame físico', normalAll:true, fields:EXAM()},
+    {title:'Exame físico', normalAll:true, tight:true, fields:EXAM()},
     {title:'Exames complementares', fields:[
       A('Laboratoriais',{out:'Laboratório',ph:'Hb | Leuco | Plaq | Cr | Ur | Na | K | PCR | Lactato'}),
       A('ECG',{normal:N.ecg}),
@@ -138,37 +138,50 @@ export const TEMPLATES=[
     ]},
     {title:'Mecanismo do trauma / contexto', fields:[
       C('Mecanismo',['Colisão auto x auto','Colisão moto x auto','Queda de moto','Atropelamento','Queda de altura','Queda da própria altura','Agressão física','FAF','FAB'],{other:'Outro'}),
-      A('Descrição do trauma',{nolabel:true,rows:3,ph:'Condutor{|a} de motocicleta, com capacete, colisão frontal com automóvel a ~60 km/h. Trazid{o|a} por APH móvel em prancha rígida com colar cervical...'}),
-      T('Alergias',{out:'A',ph:'Nega'}), T('Medicamentos',{out:'M',ph:'Nega uso de anticoagulantes'}), T('Passado médico / gestação',{out:'P',ph:'HAS, DM2'}),
-      T('Líquidos / última refeição',{out:'L',ph:'Almoço às 12:00'}),
-      T('Ambiente / eventos',{out:'A',full:true,ph:'Ejeção do veículo, encarceramento por 20 min, óbito no local, perda de consciência...'}),
-      A('Atendimento pré-hospitalar',{out:'APH',rows:3,ph:'Glasgow 13 na cena, SpO2 90% AA, 1 L de cristaloide, imobilização com colar e prancha...'})
+      A('Descrição do trauma',{nolabel:true,rows:6,ph:'Condutor{|a} de motocicleta, com capacete, colisão frontal com automóvel a ~60 km/h. Ejeção do veículo, sem perda de consciência referida. Trazid{o|a} por APH móvel em prancha rígida com colar cervical; na cena Glasgow 13, SpO2 90% AA...'}),
+      I('Medidas realizadas pelo APH',[
+        'Colar cervical',
+        'Prancha rígida',
+        'O2 suplementar',
+        'IOT',
+        'Acesso venoso periférico',
+        'Acesso intraósseo',
+        'Infusão de cristaloide',
+        'Ácido tranexâmico',
+        'Analgesia',
+        'Curativo compressivo',
+        'Torniquete',
+        'Estabilização pélvica',
+        'Imobilização de membros'
+      ],{below:true,rows:3,ph:'Drogas e doses, volume infundido, horário do torniquete...'}),
+      T('Alergias',{ph:'Nega'}), T('Medicações',{ph:'Nega uso de anticoagulantes',tight:true}), T('Passado médico / gestação',{ph:'HAS, DM2',tight:true}),
+      T('Líquidos / última refeição',{ph:'Almoço às 12:00',tight:true})
     ]},
-    {title:'Avaliação primária', normalAll:true, fields:[
-      A('X — Hemorragia exsanguinante',{out:'X',normal:'Sem hemorragia externa exsanguinante.'}),
-      M('X — intervenções',['Compressão direta','Curativo compressivo','Tamponamento com agente hemostático','Torniquete'],{out:'Intervenções (X)',other:'Outra'}),
-      A('A — Via aérea',{out:'A',normal:'Via aérea pérvia, fonação preservada, sem estridor.'}),
-      M('A — intervenções',['Aspiração','Cânula orofaríngea','IOT','Dispositivo supraglótico','Colar cervical'],{out:'Intervenções (A)',other:'Outra'}),
+    {title:'Avaliação primária', normalAll:true, tight:true, fields:[
+      A('X — Hemorragia exsanguinante',{out:'X',normal:'Sem hemorragia externa exsanguinante ou sangramento externo ativo.'}),
+      M('X — intervenções',['Compressão direta','Curativo compressivo','Tamponamento com agente hemostático','Torniquete'],{out:'Intervenções (X)',other:'Outra',tight:true}),
+      A('A — Via aérea',{out:'A',normal:'Via aérea pérvia, fonação preservada, sem estridor. Coluna cervical protegida com colar cervical.'}),
+      M('A — intervenções',['Aspiração','Cânula orofaríngea','IOT','Dispositivo supraglótico','Colar cervical'],{out:'Intervenções (A)',other:'Outra',tight:true}),
       A('B — Ventilação',{out:'B',normal:'Eupneic{o|a}, expansibilidade simétrica, MV presente bilateralmente sem ruídos adventícios. Traqueia centrada.'}),
-      M('B — intervenções',['Cateter nasal','Máscara não reinalante','CNAF','VNI','VM invasiva','Toracocentese / drenagem'],{out:'Intervenções (B)',other:'Outra'}),
-      A('C — Circulação',{out:'C',normal:'Pele corada e aquecida, TEC < 3 s, pulsos periféricos cheios e simétricos.'}),
-      M('C — intervenções',['AVP','Acesso intraósseo','CVC','Cristaloide','Hemoderivados','Vasopressor','Cardioversão / desfibrilação','Ácido tranexâmico'],{out:'Intervenções (C)',other:'Outra'}),
-      GCS({label:'D — Glasgow',part:'D'}),
-      S('D — Pupilas',PUPILAS,{out:'Pupilas',part:'D'}),
-      A('D — Neurológico',{out:'D',gather:'D',normal:'Sem déficits focais. Glicemia capilar aferida.'}),
+      M('B — intervenções',['Cateter nasal','Máscara não reinalante','CNAF','VNI','VM invasiva','Toracocentese / drenagem'],{out:'Intervenções (B)',other:'Outra',tight:true}),
+      A('C — Circulação',{out:'C',normal:'Pele corada, quente e seca, TEC < 2 s. Pulsos periféricos cheios, rítmicos e simétricos. Normocárdic{o|a} e normotens{o|a}, sem turgência jugular. Bulhas rítmicas e normofonéticas. Sem sinais de hemorragia oculta: abdome flácido e indolor, sem distensão; pelve estável; sem deformidades ou aumento de volume em ossos longos.'}),
+      M('C — intervenções',['AVP','Acesso intraósseo','CVC','Cristaloide','Hemoderivados','Vasopressor','Cardioversão / desfibrilação','Ácido tranexâmico'],{out:'Intervenções (C)',other:'Outra',tight:true}),
+      GCS({label:'D — Glasgow',part:'D',normal:true}),
+      S('D — Pupilas',PUPILAS,{out:'Pupilas',part:'D',normal:PUPILAS[0]}),
+      A('D — Neurológico',{out:'D',gather:'D',normal:'Sem déficits motores ou sensitivos focais. Sem sinais de trauma raquimedular: força e sensibilidade preservadas nos quatro membros, sem nível sensitivo.'}),
       A('E — Exposição',{out:'E',normal:'Sem lesões aparentes à exposição. Normotérmic{o|a}.'}),
       A('POCUS',{ph:'RUSH / eFAST: ...'}),
       VITALS()
     ]},
-    {title:'Avaliação secundária', normalAll:true, fields:[
-      A('Cabeça e face',{normal:'Sem deformidades, ferimentos ou crepitações. Sem otorragia, rinorragia ou sinais de fratura de base de crânio.'}),
-      A('Pescoço',{normal:'Traqueia centrada, sem turgência jugular, sem enfisema subcutâneo. Sem dor à palpação da coluna cervical.'}),
-      A('Tórax',{normal:'Expansibilidade simétrica, sem deformidades, crepitações ou enfisema subcutâneo.'}),
-      A('Abdome',{normal:'Plano, flácido, indolor, sem sinais de peritonite, equimoses ou distensão.'}),
-      A('Pelve e períneo',{out:'Pelve/períneo',normal:'Pelve estável, sem hematoma perineal ou sangramento em meato uretral.'}),
-      A('Dorso e coluna',{out:'Dorso/coluna',normal:'Sem deformidades, ferimentos ou dor à palpação de processos espinhosos.'}),
-      A('Extremidades',{normal:'Sem deformidades, pulsos distais presentes e simétricos, sem sinais de síndrome compartimental.'}),
-      A('Neurológico',{out:'Neuro',normal:'Força e sensibilidade preservadas nos quatro membros, sem déficits focais.'})
+    {title:'Avaliação secundária', normalAll:true, tight:true, fields:[
+      A('Cabeça e face',{normal:'Couro cabeludo sem lacerações, hematomas ou afundamentos. Sem sinais de fratura de base de crânio (equimose retroauricular ou periorbitária, oto/rinorragia, liquorreia). Face estável à palpação, sem crepitações ou má oclusão dentária. Olhos sem lesões aparentes.'}),
+      A('Pescoço',{normal:'Sem ferimentos, hematomas ou violação do platisma. Traqueia centrada, sem turgência jugular ou enfisema subcutâneo. Sem dor, degrau ou deformidade à palpação da coluna cervical.'}),
+      A('Tórax',{normal:'Sem ferimentos, equimoses ou deformidades. Expansibilidade simétrica, sem respiração paradoxal. Sem crepitações ósseas ou enfisema subcutâneo. MV presente e simétrico, bulhas normofonéticas.'}),
+      A('Abdome',{normal:'Sem ferimentos, escoriações ou equimoses (sinal do cinto de segurança). Plano, flácido, indolor à palpação, sem distensão ou sinais de irritação peritoneal.'}),
+      A('Pelve e períneo',{out:'Pelve/períneo',normal:'Pelve estável e indolor à compressão (realizada uma única vez). Períneo sem hematomas ou lacerações. Sem sangramento em meato uretral.'}),
+      A('Dorso e coluna',{out:'Dorso/coluna',normal:'Rolamento em bloco: dorso sem ferimentos ou equimoses. Sem dor, degrau ou deformidade à palpação dos processos espinhosos torácicos e lombares.'}),
+      A('Extremidades',{normal:'Sem deformidades, ferimentos, crepitações ou dor à palpação de ossos longos. Pulsos distais palpáveis e simétricos, TEC < 2 s. Compartimentos flácidos, sem sinais de síndrome compartimental.'}),
+      A('Neurológico',{out:'Neuro',normal:'Força grau V e sensibilidade preservadas nos quatro membros, sem nível sensitivo. Reflexos simétricos, sem sinais de lateralização.'})
     ]},
     {title:'Exames complementares', fields:[
       R('Gasometria',[['pH','','7,32'],['pCO2',' mmHg'],['pO2',' mmHg'],['HCO3',' mEq/L'],['BE',''],['Lactato',' mmol/L']]),
@@ -178,7 +191,36 @@ export const TEMPLATES=[
     ]},
     {title:'Hipóteses diagnósticas', fields:[A('Hipóteses',{nolabel:true,rows:3,ph:'1. \n2. '})]},
     {title:'Conduta', fields:[
-      I('Condutas',['Monitorização multiparamétrica','Restrição de movimento da coluna','Protocolo de transfusão maciça acionado','Hipotensão permissiva','Prevenção de hipotermia (manta térmica, fluidos aquecidos)','Tipagem sanguínea e prova cruzada','Exames laboratoriais (Hb, coagulograma, gasometria, lactato)','β-HCG','Radiografia de tórax e pelve','TC de crânio','TC de corpo inteiro (pan-TC)','Analgesia','Sedoanalgesia pós-IOT','Profilaxia antitetânica','Antibioticoterapia (fratura exposta)','Imobilização de fraturas','Sutura / curativo de ferimentos','SVD com controle de diurese','Jejum'],{nolabel:true,rows:6,ph:'Drogas e doses, hemoderivados (CH, PFC, plaquetas), parâmetros de VM, metas...'}),
+      I('Condutas',[
+        'Monitorização multiparamétrica',
+        'Restrição de movimento da coluna',
+        'Protocolo de transfusão maciça acionado',
+        'Hemotransfusão',
+        'Ácido tranexâmico',
+        'Hipotensão permissiva',
+        'Restrição de cristaloides',
+        'Reposição de cálcio (gluconato de cálcio 10%)',
+        'Reversão de anticoagulação',
+        'Estabilização pélvica',
+        'Drenagem torácica',
+        'Prevenção de hipotermia',
+        'Neuroproteção',
+        'Terapia hiperosmolar',
+        'Tipagem sanguínea e prova cruzada',
+        'Exames laboratoriais',
+        'β-HCG',
+        'Radiografia de tórax e pelve',
+        'TC de crânio',
+        'TC de corpo inteiro',
+        'Analgesia',
+        'Sedoanalgesia pós-IOT',
+        'Profilaxia antitetânica',
+        'Antibioticoterapia',
+        'Alinhamento e imobilização de fraturas',
+        'SVD com controle de diurese',
+        'Sonda orogástrica',
+        'Jejum'
+      ],{nolabel:true,rows:6,ph:'Drogas e doses, hemoderivados, parâmetros de VM, metas...'}),
       M('Comunicação',['Familiar informado sobre gravidade','Discutido com cirurgia geral / trauma','Discutido com neurocirurgia','Discutido com ortopedia','Centro cirúrgico acionado','Vaga solicitada à regulação'],{other:'Detalhar'})
     ]},
     {title:'Plano e destino', fields:[
@@ -203,7 +245,7 @@ export const TEMPLATES=[
       M('Relato',['Sem queixas','Refere melhora','Dor controlada','Aceitando dieta','Diurese espontânea','Evacuações presentes','Sono preservado','Deambulando'],{nolabel:true}),
       A('Queixas / intercorrências',{nolabel:true,ph:'Queixas e intercorrências nas últimas 24 h'})
     ]},
-    {title:'Objetivo', normalAll:true, fields:[
+    {title:'Objetivo', normalAll:true, tight:true, fields:[
       ...EXAM().slice(0,1),
       R('Balanço 24 h',[['Diurese',' mL'],['BH',' mL','+500'],['Evacuações','','1x, pastosa'],['HGT',' mg/dL','110-180']]),
       ...EXAM().slice(1)
@@ -305,10 +347,10 @@ export const TEMPLATES=[
     {title:'Identificação', inline:true, fields:[IDADE(), SEXO(), PESO()]},
     {title:'Queixa principal', fields:[T('Queixa principal',{nolabel:true,full:true})]},
     {title:'História da doença atual', fields:[A('HDA',{nolabel:true,rows:4})]},
-    {title:'Antecedentes', fields:[
+    {title:'Antecedentes', tight:true, fields:[
       T('Comorbidades',{full:true}), T('Medicações de uso contínuo',{out:'MUC',full:true}), ALERGIAS()
     ]},
-    {title:'Exame físico', fields:[VITALS(), A('Exame físico',{nolabel:true,rows:5,normal:N.sumario})]},
+    {title:'Exame físico', tight:true, fields:[VITALS(), A('Exame físico',{nolabel:true,rows:5,normal:N.sumario})]},
     {title:'Exames complementares', fields:[A('Exames',{nolabel:true})]},
     {title:'Hipótese diagnóstica', fields:[A('Hipótese',{nolabel:true,rows:2})]},
     {title:'Conduta no PS', fields:[
@@ -332,7 +374,7 @@ export const TEMPLATES=[
       C('Acionado por',['Enfermagem','Familiar','Alarme do monitor','Reavaliação de rotina'],{other:'Outro'})
     ]},
     {title:'Motivo', fields:[A('Motivo',{nolabel:true,rows:3,ph:'Chamado pela enfermagem por dessaturação...'})]},
-    {title:'Avaliação', normalAll:true, fields:[
+    {title:'Avaliação', normalAll:true, tight:true, fields:[
       VITALS(),
       GCS(),
       A('Exame direcionado',{nolabel:true,rows:4})

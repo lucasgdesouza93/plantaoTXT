@@ -73,6 +73,7 @@ Consequences:
 
 - Content is authored as data (`TEMPLATES`), so adding a field or a whole model needs no engine change.
 - Only filled fields reach the text, so nothing has to be deleted afterwards.
+- Layout of the output is also data: a blank line separates fields by default, and `tight` (per field or per section) opts out, so spacing can be tuned per model without touching the engine.
 - `{o|a}` markers in any text agree with the Sexo field; `applySex()` also rewrites text already typed when Sexo changes.
 - Fields the physician would otherwise compute by hand are `CALC` fields fed by other fields — driving pressure, relação P/F, and TFGe by CKD-EPI 2021.
 - The representations coexist: `data-template` buttons show text, `data-form` buttons mount a form, `data-tool` buttons mount a tool (AD-13).

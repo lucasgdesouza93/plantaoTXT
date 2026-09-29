@@ -70,6 +70,10 @@ The evolução form is built entirely by [evolucao-engine.js](../evolucao-engine
         <textarea class="ev-out"> texto para o prontuário
 ```
 
+"Tudo normal" appears only on sections with `normalAll: true` and fills just the fields that are still empty: long-text fields get their `normal` text, a dropdown gets its `normal` option (Pupilas → "Isocóricas e fotorreagentes"), and a Glasgow field with `normal: true` gets 15 (O4 V5 M6) only if none of its three selects is filled yet. Whatever the physician has already entered is kept.
+
+In `.ev-out`, fields within a section are separated by a blank line, so multi-line findings do not run into each other. Fields or sections marked `tight` stay on consecutive lines (e.g. Antecedentes, the AMPLA lines of Politrauma, and the paired "intervenções" under each XABCDE letter).
+
 DripCalc is built the same way by [dripcalc-engine.js](../dripcalc-engine.js) inside `#preview-tool`:
 
 ```

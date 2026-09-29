@@ -94,7 +94,14 @@ function renderForm() {
       class: 'ev-small', type: 'button',
       title: 'Preenche com o texto normal os campos de exame ainda vazios',
       onclick: () => {
-        sec.fields.forEach(f => { if (f.normal && !V()[f.id]) V()[f.id] = g(f.normal); });
+        sec.fields.forEach(f => {
+          if (!f.normal) return;
+          if (f.t === 'gcs') {
+            // Glasgow normal = 15 (O4 V5 M6), only when none of the three is filled yet
+            const k = ['o', 'v', 'm'].map(x => f.id + '_' + x);
+            if (k.every(id => !V()[id])) [V()[k[0]], V()[k[1]], V()[k[2]]] = ['4', '5', '6'];
+          } else if (!V()[f.id]) V()[f.id] = g(f.normal);
+        });
         save(); renderForm(); refresh();
       }
     }, 'Tudo normal'));
@@ -309,8 +316,12 @@ function build() {
   const out = [t.title.includes('{p}') ? t.title.replace('{p}', ex) : t.title + ex];
   if (cur.useDt.checked && cur.dt.value) out.push(fmtDt(cur.dt.value));
   t.sections.forEach(sec => {
-    const lines = sec.fields.map(f => fieldOut(f, v)).filter(Boolean);
-    if (lines.length) out.push('', sec.title.toUpperCase(), sec.inline ? lines.join(' | ') : lines.join('\n'));
+    const parts = sec.fields.map(f => ({ text: fieldOut(f, v), tight: f.tight || sec.tight })).filter(p => p.text);
+    const lines = parts.map(p => p.text);
+    // blank line between fields so multi-line fields don't run into the next one;
+    // a field with tight: true stays right below the previous one (e.g. the AMPLA lines)
+    const body = parts.map((p, i) => (i === 0 ? '' : p.tight ? '\n' : '\n\n') + p.text).join('');
+    if (lines.length) out.push('', sec.title.toUpperCase(), sec.inline ? lines.join(' | ') : body);
   });
   return out.join('\n');
 }

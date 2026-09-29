@@ -76,12 +76,13 @@ For changes to an evolução form, also check:
 8. Switching to a static template and back preserves what was filled in.
 9. Switching Sexo converts the `{o|a}` agreement in text already written.
 10. Any `CALC` that reads the fields you touched still computes (check the dashed box in the form, not only the text).
+11. Spacing in the generated text: a blank line between fields, except where `tight` keeps them on consecutive lines. If the section has "Tudo normal", it fills only empty fields and leaves typed text alone.
 
 For changes to DripCalc, also check:
 
-11. Each of the four mode tabs shows only its own fields, and Peso appears only for per-kg units.
-12. Picking a preset fills dose, unit and volume, and the result updates.
-13. A known case still gives the known answer — e.g. noradrenalina 16 mg/250 mL, 70 kg, 0,1 mcg/kg/min → **6,56 mL/h**.
+12. Each of the four mode tabs shows only its own fields, and Peso appears only for per-kg units.
+13. Picking a preset fills dose, unit and volume, and the result updates.
+14. A known case still gives the known answer — e.g. noradrenalina 16 mg/250 mL, 70 kg, 0,1 mcg/kg/min → **6,56 mL/h**.
 14. Mixing a UI dose with a mass solution (or vice versa) still shows the "não combinam" message instead of a number.
 
 ### Rule 6: Preserve UTF-8 Encoding
