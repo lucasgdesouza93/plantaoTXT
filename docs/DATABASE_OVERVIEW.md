@@ -36,7 +36,7 @@ const textos = { [key: string]: string };
 
 | Key | Source File | Section | Button Label |
 |-----|-------------|---------|--------------|
-| `pericardiocentesis` ... `proceduralSedation` | [data/procedimentos.js](../data/procedimentos.js) | Procedimentos | 13 descrições de procedimentos (IOT, cricotireoidostomia, drenagem torácica, toracocentese, toracotomia, cardioversão e marcapasso viraram os formulários `iot`, `crico`, `dreno`, `toraco`, `toracotomia`, `cve` e `mptv` em data/procedimentos-modelos.js) |
+| `arterialPuncture` ... `proceduralSedation` | [data/procedimentos.js](../data/procedimentos.js) | Procedimentos | 11 descrições de procedimentos (IOT, cricotireoidostomia, drenagem torácica, toracocentese, toracotomia, cardioversão, marcapasso, pericardiocentese e acesso venoso central viraram os formulários `iot`, `crico`, `dreno`, `toraco`, `toracotomia`, `cve`, `mptv`, `pericardio` e `cvc` em data/procedimentos-modelos.js) |
 | `altaDengue` | [data/alta.js](../data/alta.js) | Alta | Dengue A ou B |
 | `altaDorTraumatica` | [data/alta.js](../data/alta.js) | Alta | Dor Traumática |
 | `altaHerpesZoster` | [data/alta.js](../data/alta.js) | Alta | Herpes Zóster |

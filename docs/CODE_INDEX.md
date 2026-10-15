@@ -57,8 +57,8 @@ Each file in [data/](../data/) exports a named object. The text modules are merg
 
 | File | Export | Keys |
 |------|--------|------|
-| [data/procedimentos.js](../data/procedimentos.js) | `procedureTemplates` | 13 static procedure description keys (IOT, cricotireoidostomia, drenagem torácica, toracocentese, toracotomia, cardioversão and marcapasso moved to forms) |
-| [data/procedimentos-modelos.js](../data/procedimentos-modelos.js) | `PROCEDURES` | procedure form models (`iot`, `crico`, `dreno`, `toraco`, `toracotomia`, `cve`, `mptv`); same field builders as `evolucao-modelos.js` plus `prose(v)` for narrative output and `copyLabel` |
+| [data/procedimentos.js](../data/procedimentos.js) | `procedureTemplates` | 11 static procedure description keys (IOT, cricotireoidostomia, drenagem torácica, toracocentese, toracotomia, cardioversão, marcapasso, pericardiocentese and acesso venoso central moved to forms) |
+| [data/procedimentos-modelos.js](../data/procedimentos-modelos.js) | `PROCEDURES` | procedure form models (`iot`, `crico`, `dreno`, `toraco`, `toracotomia`, `cve`, `mptv`, `pericardio`, `cvc`); same field builders as `evolucao-modelos.js` plus `prose(v)` for narrative output and `copyLabel` |
 | [data/alta.js](../data/alta.js) | `altaTemplates` | `altaDengue`, `altaDorTraumatica`, `altaHerpesZoster`, `altaIVAS`, `altaNefrolitiase`, `altaPNMComorb`, `altaPNMSemComorb`, `altaPNMAlergia` |
 | [data/ia.js](../data/ia.js) | `aiPromptTemplates` | `promptResultadosLaboratoriaisLinha` |
 | [data/evolucao-modelos.js](../data/evolucao-modelos.js) | `TEMPLATES`, `N`, `num`, `fmtN`, field builders `T` `A` `C` `M` `S` | models `admissao`, `abcde`, `soap`, `sistemas`, `breve`, `intercorrencia` |

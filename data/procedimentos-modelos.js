@@ -527,5 +527,145 @@ export const PROCEDURES = [
 
     return [head, body, txt(v, 'obs')].filter(Boolean).join('\n');
   }
+},
+{
+  id: 'cvc', name: 'Acesso Venoso Central (CVC)', title: 'PROCEDIMENTO — ACESSO VENOSO CENTRAL',
+  desc: 'Punção de acesso venoso central: indicação, barreira máxima, sítio, guia por ultrassonografia, cateter, confirmação e intercorrências.',
+  copyLabel: 'Copiar descrição',
+  sections: [
+    {title: 'Indicação', fields: [
+      M('Indicação', ['Infusão de drogas vasoativas', 'Acesso venoso periférico difícil', 'Monitorização hemodinâmica', 'Infusão de soluções irritantes', 'Nutrição parenteral', 'Hemodiálise'], {id: 'ind', other: 'Outra'}),
+      T('Realizada por', {id: 'por', full: true, ph: 'Dr(a). Nome — CRM'})
+    ]},
+    {title: 'Preparo', fields: [
+      M('Preparo', ['Higienização das mãos', 'Paramentação com barreira máxima', 'Antissepsia com clorexidina alcoólica', 'Campo estéril amplo', 'Anestesia local'], {id: 'prep'}),
+      T('Anestésico local', {id: 'anest', ph: 'lidocaína 2% 5 mL'})
+    ]},
+    {title: 'Punção e cateter', fields: [
+      C('Sítio', ['Veia jugular interna direita', 'Veia jugular interna esquerda', 'Veia subclávia direita', 'Veia subclávia esquerda', 'Veia femoral direita', 'Veia femoral esquerda'], {id: 'sitio', other: 'Outro'}),
+      C('Punção', ['Guiada por ultrassonografia em tempo real', 'Por reparos anatômicos'], {id: 'guia'}),
+      T('Tentativas', {id: 'tent', ph: '1'}),
+      C('Cateter', ['Duplo lúmen', 'Triplo lúmen', 'Cateter de hemodiálise'], {id: 'cat', other: 'Outro'}),
+      T('Calibre', {id: 'cal', ph: '7 Fr'}),
+      T('Posicionado em', {id: 'fix', unit: ' cm', ph: '15'})
+    ]},
+    {title: 'Confirmação e pós-procedimento', fields: [
+      M('Confirmação', ['Refluxo sanguíneo adequado em todas as vias', 'Fio-guia visualizado na veia por ultrassonografia', 'Bubble test positivo (microbolhas no átrio direito à ultrassonografia)'], {id: 'conf'}),
+      M('Fixação', ['Fixado com ponto', 'Curativo estéril transparente'], {id: 'cur'}),
+      M('Intercorrências', ['Sem intercorrências imediatas', 'Punção arterial inadvertida, controlada com compressão', 'Arritmia transitória durante a passagem do fio-guia', 'Pneumotórax'], {id: 'inter', other: 'Outra'}),
+      M('Após o procedimento', ['Solicitada radiografia de tórax de controle', 'Liberado para uso'], {id: 'pos', other: 'Outro'}),
+      A('Observações', {id: 'obs'})
+    ]}
+  ],
+  prose: v => {
+    const ind = pick(v, 'ind'), por = txt(v, 'por');
+    const head = [
+      ind.length ? `Indicação: ${lower(joinE(ind.map(lower)))}.` : '',
+      por ? `Acesso venoso central realizado por ${por}.` : ''
+    ].filter(Boolean).join('\n');
+
+    const anest = txt(v, 'anest');
+    const prep = pick(v, 'prep').map(x => x === 'Anestesia local' && anest ? `${x} com ${anest}` : x);
+
+    // "Punção de veia jugular interna direita, guiada por ultrassonografia em tempo real, em 1 tentativa"
+    const sitio = pick(v, 'sitio')[0], guia = pick(v, 'guia')[0], tent = txt(v, 'tent');
+    const puncture = sitio || guia || tent
+      ? (sitio ? `Punção de ${lower(sitio)}` : 'Punção venosa central')
+        + (guia ? `, ${lower(guia)}` : '') + (tent ? `, em ${tent} ${tent === '1' ? 'tentativa' : 'tentativas'}` : '')
+      : '';
+
+    // "Passado cateter venoso central triplo lúmen 7 Fr pela técnica de Seldinger, posicionado em 15 cm"
+    const cat = pick(v, 'cat')[0], cal = txt(v, 'cal'), fix = withU(txt(v, 'fix'), ' cm');
+    let catheter = '';
+    if (cat || cal || fix) {
+      const name = cat === 'Cateter de hemodiálise' ? 'cateter de hemodiálise'
+        : `cateter venoso central${cat ? ' ' + lower(cat) : ''}`;
+      catheter = `Passado ${name}${cal ? ' ' + cal : ''} pela técnica de Seldinger` + (fix ? `, posicionado em ${fix}` : '');
+    }
+
+    const conf = pick(v, 'conf'), cur = pick(v, 'cur'), inter = pick(v, 'inter'), pos = pick(v, 'pos');
+    const body = sentences([
+      firstUp(prep),
+      puncture,
+      catheter,
+      conf.length ? firstUp(conf) : '',
+      cur.length ? firstUp(cur) : '',
+      inter.length ? firstUp(inter) : '',
+      pos.length ? firstUp(pos) : ''
+    ]);
+
+    return [head, body, txt(v, 'obs')].filter(Boolean).join('\n');
+  }
+},
+{
+  id: 'pericardio', name: 'Pericardiocentese', title: 'PROCEDIMENTO — PERICARDIOCENTESE',
+  desc: 'Pericardiocentese: indicação, via de acesso, guia por ultrassonografia, líquido drenado, resposta hemodinâmica e intercorrências.',
+  copyLabel: 'Copiar descrição',
+  sections: [
+    {title: 'Indicação', fields: [
+      C('Indicação', ['Tamponamento cardíaco com instabilidade hemodinâmica', 'PCR com suspeita de tamponamento', 'Derrame pericárdico volumoso (diagnóstica)'], {id: 'ind', other: 'Outra'}),
+      T('Realizada por', {id: 'por', full: true, ph: 'Dr(a). Nome — CRM'})
+    ]},
+    {title: 'Técnica', fields: [
+      M('Preparo', ['Monitorização contínua', 'Antissepsia', 'Anestesia local'], {id: 'prep'}),
+      T('Anestésico local', {id: 'anest', ph: 'lidocaína 2% 5 mL'}),
+      C('Via', ['Subxifoide', 'Apical', 'Paraesternal esquerda'], {id: 'via', other: 'Outra'}),
+      C('Guia', ['Guiada por ultrassonografia', 'Às cegas (emergência)'], {id: 'guia'}),
+      T('Material', {id: 'mat', ph: 'jelco 16G'}),
+      C('Drenagem', ['Aspiração apenas', 'Cateter duplo lúmen', 'Cateter pigtail'], {id: 'dren', other: 'Outro cateter'})
+    ]},
+    {title: 'Resultado e pós-procedimento', fields: [
+      M('Aspecto do líquido', ['Hemático', 'Sero-hemático', 'Citrino', 'Purulento'], {id: 'asp', other: 'Outro'}),
+      T('Volume drenado', {id: 'vol', unit: ' mL', ph: '150'}),
+      M('Resposta', ['Melhora hemodinâmica', 'Retorno da circulação espontânea', 'Sem melhora hemodinâmica'], {id: 'resp', other: 'Outra'}),
+      M('Material enviado para', ['Bioquímica', 'Citologia oncótica', 'Bacterioscopia (Gram)', 'Cultura', 'ADA'], {id: 'exames', other: 'Outro'}),
+      M('Intercorrências', ['Sem intercorrências imediatas', 'Arritmia transitória', 'Punção de câmara cardíaca, sem repercussão', 'Pneumotórax'], {id: 'inter', other: 'Outra'}),
+      M('Após o procedimento', ['Mantido monitorizado', 'Solicitado ecocardiograma de controle', 'Cirurgia cardíaca acionada'], {id: 'pos', other: 'Outro'}),
+      A('Observações', {id: 'obs'})
+    ]}
+  ],
+  prose: v => {
+    const ind = pick(v, 'ind'), por = txt(v, 'por');
+    const head = [
+      ind.length ? `Indicação: ${lower(joinE(ind))}.` : '',
+      por ? `Pericardiocentese realizada por ${por}.` : ''
+    ].filter(Boolean).join('\n');
+
+    const anest = txt(v, 'anest');
+    const prep = pick(v, 'prep').map(x => x === 'Anestesia local' && anest ? `${x} com ${anest}` : x);
+
+    // "Punção pericárdica por via subxifoide, guiada por ultrassonografia, com jelco 16G"
+    const via = pick(v, 'via')[0], guia = pick(v, 'guia')[0], mat = txt(v, 'mat');
+    const puncture = via || guia || mat
+      ? 'Punção pericárdica' + (via ? ` por via ${lower(via)}` : '') + (guia ? `, ${lower(guia)}` : '') + (mat ? `, com ${mat}` : '')
+      : '';
+
+    // "Drenados 150 mL de líquido hemático"
+    const asp = pick(v, 'asp'), vol = withU(txt(v, 'vol'), ' mL');
+    const fluid = asp.length || vol
+      ? (vol ? `Drenados ${vol}` : 'Obtido') + (asp.length ? ` de líquido ${lower(joinE(asp.map(lower)))}` : '')
+      : '';
+
+    // "Deixado cateter duplo lúmen no saco pericárdico, pela técnica de Seldinger, para drenagem"
+    const dren = pick(v, 'dren')[0];
+    let drain = '';
+    if (dren === 'Aspiração apenas') drain = 'Realizada aspiração, sem manutenção de cateter';
+    else if (dren === 'Cateter duplo lúmen') drain = 'Deixado cateter duplo lúmen no saco pericárdico, pela técnica de Seldinger, para drenagem';
+    else if (dren) drain = `Deixado ${lower(dren)} no saco pericárdico para drenagem`;
+
+    const resp = pick(v, 'resp'), exames = pick(v, 'exames'), inter = pick(v, 'inter'), pos = pick(v, 'pos');
+    const body = sentences([
+      firstUp(prep),
+      puncture,
+      fluid,
+      drain,
+      resp.length ? firstUp(resp) : '',
+      exames.length ? `Material enviado para ${lower(joinE(exames.map(lower)))}` : '',
+      inter.length ? firstUp(inter) : '',
+      pos.length ? firstUp(pos) : ''
+    ]);
+
+    return [head, body, txt(v, 'obs')].filter(Boolean).join('\n');
+  }
 }
 ];

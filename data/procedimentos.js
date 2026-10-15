@@ -1,6 +1,4 @@
 export const procedureTemplates = {
-  pericardiocentesis: `Realizada pericardiocentese por tamponamento cardíaco. Sob técnica asséptica guiada por US, com punção pericárdica e drenagem de conteúdo __________. Observada melhora hemodinâmica. Sem/com intercorrências.`,
-  centralVenousAccess: `Punção de acesso venoso central em veia __________ por necessidade de __________. Procedimento sob técnica asséptica, guiado por US / reparos anatômicos. Cateter inserido com refluxo adequado em todas as vias. Fixado e realizado curativo estéril. Solicitado RX de controle. Sem/com intercorrências.`,
   arterialPuncture: `Punção arterial em artéria __________ para monitorização/coleta. Técnica asséptica, com obtenção de curva arterial adequada. Sem/com intercorrências.`,
   intraosseousAccess: `Realizado acesso intraósseo em __________ por dificuldade de acesso venoso periférico. Inserção com técnica adequada, com infusão e refluxo satisfatórios. Sem/com intercorrências.`,
   lumbarPuncture: `Realizada punção lombar por __________. Técnica asséptica, em nível L3-L4/L4-L5, com obtenção de LCR claro/turvo/xantocrômico. Sem/com intercorrências. Material encaminhado para análise.`,
