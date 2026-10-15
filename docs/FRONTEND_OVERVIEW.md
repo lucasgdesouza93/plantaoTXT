@@ -163,7 +163,7 @@ There is no navigation. Every interaction is:
 3. User clicks `.model-button[data-tool="dripcalc"]`; `abrirFerramenta()` hides the other modes and calls `mountDripCalc()`.
 4. User picks a mode tab (Dose → mL/h, mL/h → Dose, Bolus, Infusão); only the fields that mode needs are shown (Peso only for per-kg units).
 5. Choosing a preset fills the dilution and the drug's usual unit; every edit recalculates and saves to `sessionStorage`.
-6. **"Copiar resultado"** copies a one-line summary (drug, solution, weight, dose → result) and shows the toast. **"Limpar"** resets the fields.
+6. **"Copiar resultado"** copies a one-line summary and shows the toast. In the two infusion modes (Dose → mL/h, mL/h → Dose) it is `Droga (solução) dose (mL/h)`, e.g. `Noradrenalina (16 mg/250 mL) 0,2 mcg/kg/min (13,13 mL/h)` — the drug is the first word of the preset name (`Solução` when none is picked) and the weight is left out. Bolus and Infusão keep their own format. **"Limpar"** resets the fields.
 
 ---
 
@@ -176,15 +176,16 @@ Three stylesheets, loaded in this order: [style.css](../style.css), [evolucao.cs
 | Property | Value |
 |----------|-------|
 | Color scheme | Dark mode only |
-| CSS organization | `:root` design tokens for colors, radii, and shadows |
-| Body background | `#08111f` plus a radial gradient accent |
-| Section background | Translucent dark panel with border and shadow |
-| Category header | Horizontal flex row with checkbox + title |
+| CSS organization | `:root` design tokens for colors and radii (`--shadow-panel` is `none`; kept so old references stay valid) |
+| Visual style | Flat and minimal: neutral gray palette, no gradients, no shadows, no hover motion; green only as accent (primary buttons, active item marker, chips) |
+| Body background | Solid `#0f0f10`, `color-scheme: dark` |
+| Section background | None — categories are plain groups separated by spacing, no card |
+| Category header | Horizontal flex row with the title only; the checkbox stays in the DOM (state + keyboard) but is visually hidden, and keyboard focus outlines the whole header |
 | Collapsed state | `.sidebar-category.collapsed .category-content { display: none; }` |
-| Button color | Green accent token |
+| Sidebar buttons | Transparent list items; hover = subtle gray; `.active` = gray background + 2px green bar on the left. `#btn-copy` is the only solid green button in text mode |
 | Preview font | `"Courier New", Courier, monospace` |
-| Sidebar width | `320px` on desktop; full-width stacked layout below `860px` |
-| Preview body | Dark gradient panel with editable text |
+| Sidebar width | `300px` on desktop; full-width stacked layout below `860px` |
+| Preview body | Solid panel with a 1px border and editable text |
 
 ### [evolucao.css](../evolucao.css) (`.ev-`) and [dripcalc.css](../dripcalc.css) (`.dc-`)
 

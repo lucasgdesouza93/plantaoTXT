@@ -71,9 +71,9 @@ The six evolução models are **not** part of `textos`: they are structured obje
 | Export | Entries | Purpose |
 |--------|---------|---------|
 | `infusionPresets` | 7 | Ready-diluted bags (noradrenalina x4 / x8, vasopressina, nitroglicerina, nitroprussiato, midazolam, fentanil) |
-| `presentations` | 26 | Ampoules and vials as supplied |
-| `infusionUnits` | 11 | Drug key → its usual infusion unit, preselected after `detectDrug()` matches |
-| `infusionUnitOptions` | 9 | Unit dropdown for the pump modes |
+| `presentations` | 28 | Ampoules and vials as supplied |
+| `infusionUnits` | 16 | Drug key → its usual infusion unit, preselected after `detectDrug()` matches |
+| `infusionUnitOptions` | 10 | Unit dropdown for the pump modes |
 | `ivPushUnitOptions` | 4 | Unit dropdown for Bolus (`mg`, `mcg`, `UI`, `g`) |
 
 `unit` uses the base ids from [dripcalc/constants.js](../dripcalc/constants.js) (`mg`, `mcg`, `units`, `g`); `vol` is in mL. Internally every mass is normalized to mcg by `toBaseUnit()` before any division.

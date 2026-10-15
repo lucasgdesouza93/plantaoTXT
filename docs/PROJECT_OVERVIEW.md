@@ -116,7 +116,7 @@ The six forms were first grouped in a single **Evolução** section, which repla
 | Procedure templates | [data/procedimentos.js](../data/procedimentos.js) | 20 procedure description templates |
 | Discharge templates | [data/alta.js](../data/alta.js) | 8 discharge prescription templates |
 | AI prompt templates | [data/ia.js](../data/ia.js) | `promptResultadosLaboratoriaisLinha` |
-| Styling | [style.css](../style.css) | Dark responsive theme, category toggles, cards, buttons, and preview panel |
+| Styling | [style.css](../style.css) | Flat, minimal dark theme (neutral grays, no gradients or shadows), category toggles, buttons, and preview panel |
 | DripCalc UI | [dripcalc-engine.js](../dripcalc-engine.js) | Builds the calculator in `#preview-tool`, exports `mountDripCalc()` / `unmountDripCalc()` |
 | DripCalc logic | [dripcalc/](../dripcalc/) | `calc.js` (pure formulas), `data.js` (presets and presentations), `constants.js` (unit ids, defaults) — copied unchanged from DripCalc |
 | DripCalc styling | [dripcalc.css](../dripcalc.css) | Calculator layout, mode tabs and result card — every class prefixed `.dc-` |

@@ -36,11 +36,13 @@ export const presentations=[
   {name:"Levetiracetam 500mg/5mL",amount:500,unit:"mg",vol:5},
   {name:"Fenobarbital 200mg/2mL",amount:200,unit:"mg",vol:2},
   {name:"MgSO4 10%",amount:1,unit:"g",vol:10},
-  {name:"MgSO4 50%",amount:5,unit:"g",vol:10}
+  {name:"MgSO4 50%",amount:5,unit:"g",vol:10},
+  {name:"Azul de metileno 1% (10 mg/mL)",amount:10,unit:"mg",vol:1},
+  {name:"Azul de metileno 2% (20 mg/mL)",amount:20,unit:"mg",vol:1}
 ]
 
 export const infusionUnits={
-  Adrenalina:UNIT.MCG_MIN,
+  Adrenalina:UNIT.MCG_KG_MIN,
   Noradrenalina:UNIT.MCG_KG_MIN,
   Dobutamina:UNIT.MCG_KG_MIN,
   Dopamina:UNIT.MCG_KG_MIN,
@@ -48,9 +50,14 @@ export const infusionUnits={
   Fenitoina:UNIT.MG_MIN,
   Midazolam:UNIT.MG_HR,
   Fentanil:UNIT.MCG_HR,
-  Propofol:UNIT.MCG_KG_MIN,
+  Propofol:UNIT.MG_KG_HR,
   Cetamina:UNIT.MG_KG_HR,
-  Vasopressina:UNIT.UNITS_MIN
+  Vasopressina:UNIT.UNITS_MIN,
+  Nitroprussiato:UNIT.MCG_KG_MIN,
+  Nitroglicerina:UNIT.MCG_MIN,
+  Morfina:UNIT.MG_HR,
+  MgSO4:UNIT.G_HR,
+  "Azul de metileno":UNIT.MG_KG_HR
 }
 
 export const infusionUnitOptions=[
@@ -61,6 +68,7 @@ export const infusionUnitOptions=[
   {value:UNIT.MG_MIN,label:"mg/min"},
   {value:UNIT.MG_KG_HR,label:"mg/kg/h"},
   {value:UNIT.MG_HR,label:"mg/h"},
+  {value:UNIT.G_HR,label:"g/h"},
   {value:UNIT.UNITS_MIN,label:"UI/min"},
   {value:UNIT.UNITS_HR,label:"UI/h"}
 ]
@@ -72,11 +80,14 @@ export const ivPushUnitOptions=[
   {value:"g",label:"g"}
 ]
 
+// ordem alfabética dentro de cada grupo do menu de drogas
+const byName=(a,b)=>a.name.localeCompare(b.name,"pt-BR",{numeric:true})
+
 export function buildCatalogForMode(currentMode){
   if(currentMode==="forward"||currentMode==="reverse"){
     return [
-      ...infusionPresets.map(item=>({...item,group:"Presets de bomba"})),
-      ...presentations.map(item=>({...item,group:"Ampolas / frascos"}))
+      ...infusionPresets.slice().sort(byName).map(item=>({...item,group:"Presets de bomba"})),
+      ...presentations.slice().sort(byName).map(item=>({...item,group:"Ampolas / frascos"}))
     ]
   }
   return []
@@ -99,5 +110,10 @@ export function detectDrug(name){
   if(lower.includes("propofol")) return "Propofol"
   if(lower.includes("cetamina")) return "Cetamina"
   if(lower.includes("vasopressina")) return "Vasopressina"
+  if(lower.includes("nitroprussiato")) return "Nitroprussiato"
+  if(lower.includes("nitroglicerina")) return "Nitroglicerina"
+  if(lower.includes("morfina")) return "Morfina"
+  if(lower.includes("mgso4")||lower.includes("magnesio")) return "MgSO4"
+  if(lower.includes("azul de metileno")) return "Azul de metileno"
   return null
 }

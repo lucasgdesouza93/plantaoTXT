@@ -45,6 +45,7 @@ export function formatUnit(selectedUnit){
     [UNIT.MG_KG]:"mg/kg",
     [UNIT.MG_KG_HR]:"mg/kg/h",
     [UNIT.MG_HR]:"mg/h",
+    [UNIT.G_HR]:"g/h",
     [UNIT.UNITS_MIN]:"UI/min",
     [UNIT.UNITS_HR]:"UI/h",
     [UNIT.MCG_KG]:"mcg/kg",
@@ -124,6 +125,7 @@ export function calculateForwardRate(prescribedDose,selectedUnit,patientWeight,c
     case UNIT.MG_MIN: perHour=prescribedDose*1000*60; break
     case UNIT.MG_KG_HR: perHour=prescribedDose*patientWeight*1000; break
     case UNIT.MG_HR: perHour=prescribedDose*1000; break
+    case UNIT.G_HR: perHour=prescribedDose*1000000; break
     case UNIT.UNITS_MIN: perHour=prescribedDose*60; break
     case UNIT.UNITS_HR: perHour=prescribedDose; break
     case UNIT.MG_KG:
@@ -150,6 +152,7 @@ export function calculateReverseRate(mlh,selectedUnit,patientWeight,concentratio
     case UNIT.MG_MIN: doseOut=perHour/(1000*60); break
     case UNIT.MG_KG_HR: doseOut=perHour/(patientWeight*1000); break
     case UNIT.MG_HR: doseOut=perHour/1000; break
+    case UNIT.G_HR: doseOut=perHour/1000000; break
     case UNIT.UNITS_MIN: doseOut=perHour/60; break
     case UNIT.UNITS_HR: doseOut=perHour; break
     case UNIT.MG_KG:

@@ -197,7 +197,9 @@ function compute() {
 
   const concentration = calculateConcentration(val('amount'), f.amountUnit.value, val('volume'));
   const meta = `Concentração: ${n(concentration)} ${concLabel(f.amountUnit.value)}`;
-  const head = [drugName(), `solução ${solution}`, withWeight ? `peso ${n(weight)} kg` : ''].filter(Boolean).join('; ');
+  // texto copiado: "Noradrenalina (16 mg/250 mL) 0,2 mcg/kg/min (13,13 mL/h)"
+  const shortName = detectDrug(drugName() || '') || (drugName() || '').split(' ')[0] || 'Solução';
+  const head = `${shortName} (${n(val('amount'))} ${formatUnit(f.amountUnit.value)}/${n(val('volume'))} mL)`;
 
   if (m === 'forward') {
     if (!isPositiveNumber(val('dose'))) return { error: 'Dose deve ser maior que zero.' };
@@ -207,7 +209,7 @@ function compute() {
       label: 'Velocidade da bomba',
       value: `${n(r.mlh)} mL/h`,
       meta,
-      text: `${head}: ${n(val('dose'), 3)} ${formatUnit(unit)} = ${n(r.mlh)} mL/h`
+      text: `${head} ${n(val('dose'), 3)} ${formatUnit(unit)} (${n(r.mlh)} mL/h)`
     };
   }
 
@@ -218,7 +220,7 @@ function compute() {
     label: 'Dose entregue',
     value: `${n(r.dose, 3)} ${formatUnit(unit)}`,
     meta,
-    text: `${head}: ${n(val('rate'))} mL/h = ${n(r.dose, 3)} ${formatUnit(unit)}`
+    text: `${head} ${n(r.dose, 3)} ${formatUnit(unit)} (${n(val('rate'))} mL/h)`
   };
 }
 

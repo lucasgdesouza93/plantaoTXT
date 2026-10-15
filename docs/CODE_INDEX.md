@@ -70,7 +70,7 @@ Each file in [data/](../data/) exports a named object. The text modules are merg
 |------|--------|----------|
 | [dripcalc/constants.js](../dripcalc/constants.js) | `UNIT`, `AMOUNT_UNIT`, `DEFAULT_MODE`, `DEFAULT_INFUSION_UNIT`, `DEFAULT_BOLUS_UNIT`, `DEFAULT_TIME_UNIT` | Frozen unit id maps and defaults |
 | [dripcalc/calc.js](../dripcalc/calc.js) | 12 pure functions | Parsing, unit conversion, formatting, and the four calculators |
-| [dripcalc/data.js](../dripcalc/data.js) | `infusionPresets` (7), `presentations` (26), `infusionUnits` (11), `infusionUnitOptions` (9), `ivPushUnitOptions` (4), `buildCatalogForMode()`, `detectDrug()` | Drug catalogs and unit dropdowns |
+| [dripcalc/data.js](../dripcalc/data.js) | `infusionPresets` (7), `presentations` (28), `infusionUnits` (16), `infusionUnitOptions` (10), `ivPushUnitOptions` (4), `buildCatalogForMode()`, `detectDrug()` | Drug catalogs and unit dropdowns |
 
 #### Form model format
 

@@ -7,6 +7,7 @@ export const UNIT=Object.freeze({
   MG_MIN:    "mg_min",
   MG_KG_HR:  "mg_kg_hr",
   MG_HR:     "mg_hr",
+  G_HR:      "g_hr",
   UNITS_MIN: "units_min",
   UNITS_HR:  "units_hr",
   MG_KG:     "mg_kg",
