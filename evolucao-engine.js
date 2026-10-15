@@ -4,7 +4,11 @@
    para o prontuário. Sem DOM próprio no index.html: tudo é criado aqui.
    Estado no sessionStorage (some ao fechar a aba), separado por modelo.
    ===================================================================== */
-import { TEMPLATES, N, num, fmtN } from './data/evolucao-modelos.js';
+import { TEMPLATES as EVOLUCOES, N, num, fmtN } from './data/evolucao-modelos.js';
+import { PROCEDURES } from './data/procedimentos-modelos.js';
+
+// evoluções/admissões e procedimentos usam o mesmo motor
+const TEMPLATES = [...EVOLUCOES, ...PROCEDURES];
 
 const el = (tag, attrs = {}, ...kids) => {
   const e = document.createElement(tag);
@@ -311,6 +315,14 @@ function fmtDt(s) {
 
 function build() {
   const t = tpl(), v = V();
+  // procedimentos: texto corrido escrito pela função prose(v) do modelo
+  if (t.prose) {
+    const out = [t.title];
+    if (cur.useDt.checked && cur.dt.value) out.push(fmtDt(cur.dt.value));
+    const body = t.prose(v).trim();
+    if (body) out.push('', body);
+    return out.join('\n');
+  }
   const extra = t.sections.flatMap(s => s.fields).filter(f => f.intitle).flatMap(f => v[f.id] || []);
   const ex = extra.length ? ' ' + extra.join(' ').toUpperCase() : '';
   const out = [t.title.includes('{p}') ? t.title.replace('{p}', ex) : t.title + ex];
@@ -422,7 +434,7 @@ export function mountEvolucao(container, tplId, toast) {
           }
         }
       }, 'Limpar modelo'),
-      el('button', { class: 'ev-primary', type: 'button', onclick: copy }, 'Copiar evolução')
+      el('button', { class: 'ev-primary', type: 'button', onclick: copy }, t.copyLabel || 'Copiar evolução')
     ),
     el('div', { class: 'ev-main' },
       el('div', {}, desc, form),

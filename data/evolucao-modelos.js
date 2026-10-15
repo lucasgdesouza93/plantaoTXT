@@ -388,3 +388,6 @@ export const TEMPLATES=[
   ]
 }
 ];
+
+// construtores de campo reaproveitados pelos modelos de procedimento (data/procedimentos-modelos.js)
+export { T, A, C, M, S };

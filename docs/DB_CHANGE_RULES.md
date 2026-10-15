@@ -8,6 +8,7 @@ This project has no database. The equivalent content layer is:
 |----------|-------|-------------|
 | [data/](../data/) `alta.js`, `ia.js`, `procedimentos.js` | static template strings | merged into `textos` in [app.js](../app.js) |
 | [data/evolucao-modelos.js](../data/evolucao-modelos.js) | the 6 declarative form models | [evolucao-engine.js](../evolucao-engine.js) |
+| [data/procedimentos-modelos.js](../data/procedimentos-modelos.js) | procedure form models with `prose(v)` | [evolucao-engine.js](../evolucao-engine.js) |
 | [dripcalc/data.js](../dripcalc/data.js) | pump presets, drug presentations, unit options | [dripcalc-engine.js](../dripcalc-engine.js) |
 
 ---
@@ -47,6 +48,8 @@ const textos = {
 ```
 
 To add or change an **evolução form** instead, edit `TEMPLATES` in [data/evolucao-modelos.js](../data/evolucao-modelos.js) — the engine needs no change. A new model also needs a `.model-button[data-form="<id>"]` in [index.html](../index.html). Beware that field ids are derived from section index and label, so renaming a label or reordering sections discards what a user had already filled in for that model in an open tab.
+
+To turn a **procedure** into a form, add a model to `PROCEDURES` in [data/procedimentos-modelos.js](../data/procedimentos-modelos.js): same `sections`/fields as an evolução model, every field with an explicit `id`, plus `prose(v)` returning the narrative text (omit sentences whose fields are empty) and optionally `copyLabel`. Then switch its sidebar button from `data-template` to `data-form="<id>"` and delete the old key from [data/procedimentos.js](../data/procedimentos.js).
 
 A `CALC` field reads other fields **by id**, so any field it depends on must declare an explicit `id` — auto-generated ids shift when sections move. `TFGe (CKD-EPI 2021)` in the `sistemas` model is the example: it reads `cr`, `idade` and `sexo`, all declared by hand.
 

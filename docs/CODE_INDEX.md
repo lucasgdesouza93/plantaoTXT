@@ -57,10 +57,11 @@ Each file in [data/](../data/) exports a named object. The text modules are merg
 
 | File | Export | Keys |
 |------|--------|------|
-| [data/procedimentos.js](../data/procedimentos.js) | `procedureTemplates` | 20 procedure description keys |
+| [data/procedimentos.js](../data/procedimentos.js) | `procedureTemplates` | 13 static procedure description keys (IOT, cricotireoidostomia, drenagem torácica, toracocentese, toracotomia, cardioversão and marcapasso moved to forms) |
+| [data/procedimentos-modelos.js](../data/procedimentos-modelos.js) | `PROCEDURES` | procedure form models (`iot`, `crico`, `dreno`, `toraco`, `toracotomia`, `cve`, `mptv`); same field builders as `evolucao-modelos.js` plus `prose(v)` for narrative output and `copyLabel` |
 | [data/alta.js](../data/alta.js) | `altaTemplates` | `altaDengue`, `altaDorTraumatica`, `altaHerpesZoster`, `altaIVAS`, `altaNefrolitiase`, `altaPNMComorb`, `altaPNMSemComorb`, `altaPNMAlergia` |
 | [data/ia.js](../data/ia.js) | `aiPromptTemplates` | `promptResultadosLaboratoriaisLinha` |
-| [data/evolucao-modelos.js](../data/evolucao-modelos.js) | `TEMPLATES`, `N`, `num`, `fmtN` | models `admissao`, `abcde`, `soap`, `sistemas`, `breve`, `intercorrencia` |
+| [data/evolucao-modelos.js](../data/evolucao-modelos.js) | `TEMPLATES`, `N`, `num`, `fmtN`, field builders `T` `A` `C` `M` `S` | models `admissao`, `abcde`, `soap`, `sistemas`, `breve`, `intercorrencia` |
 
 `num()` and `fmtN()` live in the models file, not the engine, because the `CALC` functions declared there close over them; the engine imports them back from it. `ckdEpi2021()` is private to the file and parses creatinine with its own `parseFloat` — `num()` treats a dot as a thousands separator, so `1.2` would become `12`.
 

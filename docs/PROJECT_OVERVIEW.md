@@ -25,7 +25,8 @@ The sidebar offers three kinds of items:
               ├── data/alta.js    (discharge prescription templates)
               ├── data/ia.js      (frequently used AI prompts)
               ├── evolucao-engine.js    (form engine: renders fields, builds the text)
-              │    └── data/evolucao-modelos.js (6 form models, declarative)
+              │    ├── data/evolucao-modelos.js (6 form models, declarative)
+              │    └── data/procedimentos-modelos.js (procedure forms with prose output)
               └── dripcalc-engine.js    (DripCalc calculator UI, all classes prefixed .dc-)
                    └── dripcalc/        (calc.js, data.js, constants.js — pure math and presets)
 ```
@@ -90,13 +91,13 @@ User selects DripCalc (Ferramentas)
 
 ## Template Categories
 
-The application contains **36 items** grouped into 6 sections: 6 interactive forms, 29 static texts and 1 tool.
+The application contains **36 items** grouped into 6 sections: 13 interactive forms, 22 static texts and 1 tool.
 
 | Section | Kind | Items |
 |---------|------|-------|
 | Evoluções | form (`data-form`) | Evolução diária (SOAP), Evolução por sistemas (crítico), Intercorrência |
 | Admissões | form (`data-form`) | Paciente Clínico, Politrauma (XABCDE), Atendimento PS / alta |
-| Procedimentos | text (`data-template`) | 20 descrições de procedimentos clínicos e de emergência |
+| Procedimentos | form (`data-form`) + text (`data-template`) | 20 descrições de procedimentos: Intubação Orotraqueal (IOT), Cricotireoidostomia, Drenagem Torácica, Toracocentese, Toracotomia de Reanimação, Cardioversão Elétrica Sincronizada e Marcapasso Transvenoso já são formulários (texto corrido montado pelos campos); as outras 13 ainda são texto fixo |
 | Orientações / Prescrições (Alta) | text (`data-template`) | Dengue, Dor Traumática, Herpes Zóster, IVAS, Nefrolitíase, PNM sem comorbidade, PNM com comorbidade, PNM – alergia a β-lactâmicos/macrolídeos |
 | Prompts de IA | text (`data-template`) | Resultados laboratoriais em linha |
 | Ferramentas | tool (`data-tool`) | DripCalc — infusão, bolus e fluidos |
@@ -113,7 +114,8 @@ The six forms were first grouped in a single **Evolução** section, which repla
 | Entry point | [app.js](../app.js) | Imports data modules, merges `textos`, defines `limparPreview()`, `copiar()`, `abrirFormulario()`, `abrirFerramenta()`, `copiarPreview()`, `toast()`, and initializes category toggles |
 | Form engine | [evolucao-engine.js](../evolucao-engine.js) | Renders the form for a model, generates the prontuário text, exports `mountEvolucao()` / `unmountEvolucao()` / `modelosEvolucao` |
 | Form models | [data/evolucao-modelos.js](../data/evolucao-modelos.js) | `TEMPLATES` (6 models), `N` (normal exam texts), `num()` / `fmtN()`, and the CKD-EPI 2021 helper behind the TFGe field |
-| Procedure templates | [data/procedimentos.js](../data/procedimentos.js) | 20 procedure description templates |
+| Procedure templates | [data/procedimentos.js](../data/procedimentos.js) | 13 static procedure description templates |
+| Procedure forms | [data/procedimentos-modelos.js](../data/procedimentos-modelos.js) | `PROCEDURES`: procedure models for the evolução engine, each with a `prose(v)` that writes the narrative text (today `iot`, `crico`, `dreno`, `toraco`, `toracotomia`, `cve` and `mptv`) |
 | Discharge templates | [data/alta.js](../data/alta.js) | 8 discharge prescription templates |
 | AI prompt templates | [data/ia.js](../data/ia.js) | `promptResultadosLaboratoriaisLinha` |
 | Styling | [style.css](../style.css) | Flat, minimal dark theme (neutral grays, no gradients or shadows), category toggles, buttons, and preview panel |

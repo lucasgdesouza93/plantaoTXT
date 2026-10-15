@@ -9,7 +9,7 @@ All content is hardcoded in ES modules and loaded at startup. There are three ki
 | Kind | Where | Shape |
 |------|-------|-------|
 | Static texts | [data/alta.js](../data/alta.js), [data/ia.js](../data/ia.js), [data/procedimentos.js](../data/procedimentos.js) | string literals, merged into `textos` |
-| Form models | [data/evolucao-modelos.js](../data/evolucao-modelos.js) | declarative objects |
+| Form models | [data/evolucao-modelos.js](../data/evolucao-modelos.js) and [data/procedimentos-modelos.js](../data/procedimentos-modelos.js) | declarative objects |
 | Calculator catalogs | [dripcalc/data.js](../dripcalc/data.js) | preset / presentation objects |
 
 ---
@@ -36,7 +36,7 @@ const textos = { [key: string]: string };
 
 | Key | Source File | Section | Button Label |
 |-----|-------------|---------|--------------|
-| `orotrachealIntubation` ... `proceduralSedation` | [data/procedimentos.js](../data/procedimentos.js) | Procedimentos | 20 descrições de procedimentos |
+| `pericardiocentesis` ... `proceduralSedation` | [data/procedimentos.js](../data/procedimentos.js) | Procedimentos | 13 descrições de procedimentos (IOT, cricotireoidostomia, drenagem torácica, toracocentese, toracotomia, cardioversão e marcapasso viraram os formulários `iot`, `crico`, `dreno`, `toraco`, `toracotomia`, `cve` e `mptv` em data/procedimentos-modelos.js) |
 | `altaDengue` | [data/alta.js](../data/alta.js) | Alta | Dengue A ou B |
 | `altaDorTraumatica` | [data/alta.js](../data/alta.js) | Alta | Dor Traumática |
 | `altaHerpesZoster` | [data/alta.js](../data/alta.js) | Alta | Herpes Zóster |

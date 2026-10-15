@@ -110,6 +110,8 @@ function abrirFerramenta(nome: string, btn?: HTMLElement): void
 | Export | Signature | Behavior |
 |--------|-----------|----------|
 | `mountEvolucao` | `(container: HTMLElement, tplId: string, toast: (msg: string) => void) => void` | Empties `container` and builds the form for `tplId`; no-op if `tplId` is unknown. Only one form may be mounted at a time. |
+
+The engine renders `[...TEMPLATES, ...PROCEDURES]`. A model with `prose(v)` (procedures) outputs its title, the optional date/time and the text `prose(v)` returns, instead of the section-by-section labelled output; `copyLabel` overrides the "Copiar evolução" button text.
 | `unmountEvolucao` | `(container: HTMLElement) => void` | Empties `container` and releases the active context. Safe to call when nothing is mounted. |
 | `modelosEvolucao` | `Array<{ id: string, name: string }>` | One entry per model, in declaration order. |
 
