@@ -118,6 +118,6 @@ The six forms were first grouped in a single **Evolução** section, which repla
 | AI prompt templates | [data/ia.js](../data/ia.js) | `promptResultadosLaboratoriaisLinha` |
 | Styling | [style.css](../style.css) | Flat, minimal dark theme (neutral grays, no gradients or shadows), category toggles, buttons, and preview panel |
 | DripCalc UI | [dripcalc-engine.js](../dripcalc-engine.js) | Builds the calculator in `#preview-tool`, exports `mountDripCalc()` / `unmountDripCalc()` |
-| DripCalc logic | [dripcalc/](../dripcalc/) | `calc.js` (pure formulas), `data.js` (presets and presentations), `constants.js` (unit ids, defaults) — copied unchanged from DripCalc |
+| DripCalc logic | [dripcalc/](../dripcalc/) | `calc.js` (pure formulas), `data.js` (presets and presentations), `constants.js` (unit ids, defaults) — copied from DripCalc, with small local additions listed in AD-16 |
 | DripCalc styling | [dripcalc.css](../dripcalc.css) | Calculator layout, mode tabs and result card — every class prefixed `.dc-` |
 | Form styling | [evolucao.css](../evolucao.css) | Form layout, chips, and output panel — every class prefixed `.ev-`, reusing the `style.css` color tokens |

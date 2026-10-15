@@ -97,9 +97,9 @@ There are no reusable component abstractions.
 
 | Element | Description | Source |
 |---------|-------------|--------|
-| `.sidebar-category` | Card-like wrapper for each category | [index.html](../index.html), styled in [style.css](../style.css) |
+| `.sidebar-category` | Plain group for each category (no card, separated by spacing) | [index.html](../index.html), styled in [style.css](../style.css) |
 | `.category-header` | Clickable label that contains the checkbox and category title | [index.html](../index.html) |
-| `.category-toggle` | Checkbox that controls expanded/collapsed state; starts unchecked by default | initialized by [app.js](../app.js) |
+| `.category-toggle` | Visually hidden checkbox that controls expanded/collapsed state (clicking the header toggles it; still keyboard-focusable); starts unchecked by default | initialized by [app.js](../app.js) |
 | `.category-content` | Wrapper that contains the buttons and is hidden when collapsed | [index.html](../index.html), toggled by `.collapsed` |
 | `.model-button` | Sidebar button for each template, procedure description, prompt, evolução form, or tool | [index.html](../index.html), selected by [app.js](../app.js) |
 | `#preview-form` | Container for the evolução form; hidden while in text mode | [index.html](../index.html), filled by [evolucao-engine.js](../evolucao-engine.js) |
@@ -163,7 +163,7 @@ There is no navigation. Every interaction is:
 3. User clicks `.model-button[data-tool="dripcalc"]`; `abrirFerramenta()` hides the other modes and calls `mountDripCalc()`.
 4. User picks a mode tab (Dose → mL/h, mL/h → Dose, Bolus, Infusão); only the fields that mode needs are shown (Peso only for per-kg units).
 5. Choosing a preset fills the dilution and the drug's usual unit; every edit recalculates and saves to `sessionStorage`.
-6. **"Copiar resultado"** copies a one-line summary and shows the toast. In the two infusion modes (Dose → mL/h, mL/h → Dose) it is `Droga (solução) dose (mL/h)`, e.g. `Noradrenalina (16 mg/250 mL) 0,2 mcg/kg/min (13,13 mL/h)` — the drug is the first word of the preset name (`Solução` when none is picked) and the weight is left out. Bolus and Infusão keep their own format. **"Limpar"** resets the fields.
+6. **"Copiar resultado"** copies a one-line summary and shows the toast. In the two infusion modes (Dose → mL/h, mL/h → Dose) it is `Droga (solução) dose (mL/h)`, e.g. `Noradrenalina (16 mg/250 mL) 0,2 mcg/kg/min (13,13 mL/h)` — the drug name comes from `detectDrug()` (e.g. `Azul de metileno`), falling back to the first word of the catalog name, or `Solução` when none is picked; and the weight is left out. Bolus and Infusão keep their own format. **"Limpar"** resets the fields.
 
 ---
 

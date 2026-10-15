@@ -55,8 +55,8 @@ A `CALC` field reads other fields **by id**, so any field it depends on must dec
 Presets and presentations live in [dripcalc/data.js](../dripcalc/data.js) and are plain objects `{ name, amount, unit, vol }` — `unit` must be one of `mg`, `mcg`, `units`, `g`; `vol` is in mL.
 
 - `infusionPresets` are already-diluted bags; `presentations` are ampoules/vials as supplied.
-- `detectDrug(name)` maps a catalog entry's `name` to a drug key by substring match, and `infusionUnits[key]` then preselects that drug's usual unit. A new drug needs an entry in **both** to preselect the unit — otherwise the dilution still fills in and the user picks the unit.
-- [dripcalc/calc.js](../dripcalc/calc.js) and [dripcalc/constants.js](../dripcalc/constants.js) were copied unchanged from the standalone DripCalc app. Prefer keeping them that way so fixes can be carried across; UI-only concerns belong in [dripcalc-engine.js](../dripcalc-engine.js).
+- `detectDrug(name)` maps a catalog entry's `name` to a drug key by substring match, and `infusionUnits[key]` then preselects that drug's usual unit. A new drug needs an entry in **both** to preselect the unit — otherwise the dilution still fills in and the user picks the unit. The unit must also exist in `infusionUnitOptions` (and in `UNIT` + `calc.js` if it is new, as `g/h` was). The name `detectDrug()` returns is also the drug name in the copied summary. Order inside the arrays does not matter: `buildCatalogForMode()` sorts each group alphabetically.
+- [dripcalc/calc.js](../dripcalc/calc.js) and [dripcalc/constants.js](../dripcalc/constants.js) were copied from the standalone DripCalc app (only the `g/h` unit was added locally). Keep further changes minimal so fixes can be carried across; UI-only concerns belong in [dripcalc-engine.js](../dripcalc-engine.js).
 - **Doses are clinical content.** Changing a preset changes what the calculator recommends: check the result against a known case before and after.
 
 ### Rule 5: Test Selection and Clipboard Copy After Any Change

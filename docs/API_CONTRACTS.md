@@ -139,7 +139,7 @@ Same guarantees as the evolução engine: module scope only, no `window`, no DOM
 
 ## `dripcalc/calc.js` — pure functions
 
-Copied unchanged from the standalone DripCalc app. No DOM, no state, safe to call from anywhere.
+Copied from the standalone DripCalc app; the only local change is the `g_hr` (g/h) unit in `formatUnit`, `calculateForwardRate` and `calculateReverseRate`. No DOM, no state, safe to call from anywhere.
 
 | Function | Signature | Notes |
 |----------|-----------|-------|

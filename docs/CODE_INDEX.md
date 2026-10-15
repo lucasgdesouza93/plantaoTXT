@@ -64,7 +64,7 @@ Each file in [data/](../data/) exports a named object. The text modules are merg
 
 `num()` and `fmtN()` live in the models file, not the engine, because the `CALC` functions declared there close over them; the engine imports them back from it. `ckdEpi2021()` is private to the file and parses creatinine with its own `parseFloat` — `num()` treats a dot as a thousands separator, so `1.2` would become `12`.
 
-[dripcalc/](../dripcalc/) — copied unchanged from the standalone DripCalc app, except that `CACHE_VERSION` and `STORAGE_KEY` were dropped from `constants.js`:
+[dripcalc/](../dripcalc/) — copied from the standalone DripCalc app; `CACHE_VERSION` and `STORAGE_KEY` were dropped from `constants.js`, and local additions are listed in AD-16 (the `g/h` unit, extra default units and presentations, alphabetical catalog):
 
 | File | Export | Contents |
 |------|--------|----------|
@@ -173,11 +173,11 @@ Beyond the original app, `compute()` rejects dose/solution unit pairs that mix U
 
 | File | Description |
 |------|-------------|
-| [style.css](../style.css) | Dark responsive theme, category headers, collapsible sidebar groups, buttons, and preview panel styles |
+| [style.css](../style.css) | Flat, minimal dark theme (neutral grays, no gradients or shadows), category headers with hidden checkboxes, collapsible sidebar groups, buttons, and preview panel styles |
 | [dripcalc.css](../dripcalc.css) | DripCalc: mode tabs, two-column field grid, sticky result card; same `.dc-root` reset approach as `evolucao.css` |
 | [evolucao.css](../evolucao.css) | Evolução form: two-column layout, cards, chips, unit inputs, Glasgow grid, and output panel |
 
-Both `evolucao.css` and `dripcalc.css` follow the same pattern: every selector prefixed (`.ev-` / `.dc-`), scoped under the engine's root element, reusing the `--color-*` tokens from `style.css`, and opening with a reset block — `style.css` styles bare `button`, `input`, `select` and `textarea` globally (full-width green buttons), which would otherwise apply to every chip and every field of both engines. Two consequences when editing either file:
+Both `evolucao.css` and `dripcalc.css` follow the same pattern: every selector prefixed (`.ev-` / `.dc-`), scoped under the engine's root element, reusing the `--color-*` tokens from `style.css`, and opening with a reset block — `style.css` styles bare `button`, `input`, `select` and `textarea` globally (full-width sidebar-style buttons), which would otherwise apply to every chip and every field of both engines. Two consequences when editing either file:
 
 - The reset uses `.ev-root <tag>` / `.dc-root <tag>` (specificity 0,1,1), so a later single-class rule such as `.ev-out` **loses** to it. Rules that must win carry the tag: `.ev-root textarea.ev-out`.
 - A chip's computed `display` is `block`, not `inline-block`: flex items are blockified by the CSS spec. That is expected, not a bug.
